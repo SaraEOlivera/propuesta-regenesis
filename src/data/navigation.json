@@ -1,0 +1,38 @@
+{
+  "brand": {
+    "name": "Regénesis",
+    "logo": "Viva Medical"
+  },
+  "contact": {
+    "addressLine1": "123 Healthcare Drive, Suite 200",
+    "addressLine2": "Springfield, IL 62701",
+    "phone": "+1 (555) 123-4567",
+    "email": "hello@example.com"
+  },
+  "links": [
+    {
+      "label": "Inicio",
+      "href": "/",
+      "icon": "home"
+    },
+    {
+      "label": "Quiénes somos",
+      "href": "/about",
+      "icon": "info"
+    },
+    {
+      "label": "Servicios",
+      "href": "/services",
+      "icon": "clipboard"
+    },
+    {
+      "label": "Capacitaciones",
+      "href": "/careers",
+      "icon": "users"
+    }
+  ],
+  "cta": {
+    "label": "Contacto",
+    "href": "/contact"
+  }
+}
