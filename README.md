@@ -30,13 +30,7 @@ Antes de comenzar, es necesario tener instalado:
 Clonar el repositorio:
 
 ```bash
-git clone URL_DEL_REPOSITORIO
-```
-
-Ingresar a la carpeta:
-
-```bash
-cd propuesta-regenesis-master
+git clone https://github.com/SaraEOlivera/propuesta-regenesis.git
 ```
 
 Instalar las dependencias:
