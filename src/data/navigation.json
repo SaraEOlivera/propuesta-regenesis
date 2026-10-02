@@ -33,12 +33,12 @@
       "icon": "info"
     },
     {
-      "label": "Servicios",
+      "label": "Informacion",
       "href": "/services",
       "icon": "clipboard"
     },
     {
-      "label": "Capacitaciones",
+      "label": "Actividades",
       "href": "/careers",
       "icon": "users"
     }
