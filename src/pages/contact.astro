@@ -1,0 +1,290 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import logoImage from '../assets/regenesis/Logo.png';
+import nav from "../data/navigation.json";
+import { Instagram, Facebook, Phone, Mail, MapPin, MessageCircle } from "lucide-astro";
+---
+---
+<Layout
+  title="Contacto | Regenesis"
+  description="Contáctese con Regenesis, centro de ayuda para personas con adicciones y sus familias. Escríbanos o llámenos: lo escuchamos y lo orientamos sin juicios."
+>
+  <section
+    class="section bg-gradient-to-b from-theme-surface-muted to-theme-surface"
+    id="contact"
+  >
+    <div class="container">
+
+       <!-- Título de la sección -->
+    <div class="mb-12 text-center">
+      <h2 class="text-3xl font-bold text-theme-text-primary md:text-4xl">
+        Contactate con nosotros
+      </h2>
+
+      <p class="mt-3 text-lg text-theme-text-muted">
+        Estamos para escucharte y acompañarte.
+      </p>
+    </div>
+
+      <div class="flex items-stretch justify-center">
+        <div class="grid md:grid-cols-2">
+          <div class="h-full mt-3 mb-12 pr-6">
+            <p class="mt-3 mb-12 text-lg text-theme-text-primary">
+              <!-- Changed text color to black -->
+              En Regenesis creemos que pedir ayuda es un paso importante. Ofrecemos
+              un espacio de escucha, acompañamiento y contención para personas que
+              atraviesan situaciones de consumo problemático y para sus familias.
+              Estamos para acompañarte con respeto, empatía y sin juicios.
+            </p>
+            <ul class="mb-6 md:mb-0">
+              <li class="flex">
+                <div class="flex h-10 w-10 items-center justify-center">
+                  <svg
+                    class="w-6 h-6 text-theme-primary"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                      clip-rule="evenodd"></path>
+                  </svg>
+                </div>
+                <div class="ml-4 mb-4">
+                  <h3
+                    class="mb-2 text-lg font-medium leading-6 text-theme-text-primary"
+                  >
+                    Dirección
+                  </h3>
+                  <p class="text-theme-text-primary">
+                    <!-- Changed text color to black -->
+                    {nav.contact.addressLine1}
+                  </p>
+                  <p class="text-theme-text-primary">
+                    <!-- Changed text color to black -->
+                     {nav.contact.addressLine2}
+                  </p>
+                </div>
+              </li>
+              <li class="flex">
+                <div class="flex h-10 w-10 items-center justify-center">
+                  <svg
+                    class="w-6 h-6 text-theme-primary"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"
+                    ></path>
+                    <path
+                      d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"
+                    ></path>
+                  </svg>
+                </div>
+                <div class="ml-4 mb-4">
+                  <h3
+                    class="mb-2 text-lg font-medium leading-6 text-theme-text-primary"
+                  >
+                    Redes Sociales y Email
+                  </h3>
+                <p class="text-theme-text-primary">
+<a
+  href={nav.social[1].href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="link-primary flex items-center gap-2"
+>
+  <Facebook size={20} />
+  Facebook
+</a>
+<a
+  href={nav.social[0].href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="link-primary flex items-center gap-2"
+>
+  <Instagram size={20} />
+  Instagram
+</a>
+                  </p>
+                  <p class="text-theme-text-primary">
+                   Email:
+                  <a href={`mailto:${nav.contact.email}`} class="link-primary">
+                   {nav.contact.email}
+                  </a>
+                  </p>
+                </div>
+              </li>
+              <li class="flex">
+                <div class="flex h-10 w-10 items-center justify-center">
+                  <svg
+                    class="w-6 h-6 text-theme-primary"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                      clip-rule="evenodd"></path>
+                  </svg>
+                </div>
+                <div class="ml-4 mb-4">
+                  <h3
+                    class="mb-2 text-lg font-medium leading-6 text-theme-text-primary"
+                  >
+                    Horarios de Atención
+                  </h3>
+                  <p class="text-theme-text-primary">
+                    <!-- Changed text color to black -->
+                    Abierto las 24hs.
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="bg-white rounded-2xl shadow-xl p-8 md:p-10 h-full border border-gray-100 hover:shadow-2xl transition-shadow duration-300"
+            id="form"
+          >
+<h2 class="mb-6 text-2xl font-bold text-theme-text-primary">
+  Mandanos un mensaje y nos pondremos en contacto contigo lo antes posible.
+</h2>
+
+<form id="contactForm">
+  <div class="mb-6">
+    <div class="mx-0 mb-1 sm:mb-4">
+
+      <div class="mx-0 mb-4">
+        <label
+          for="name"
+          class="block pb-2 text-xs font-semibold uppercase tracking-wider text-theme-text-primary"
+        >
+          Nombre
+        </label>
+
+        <input
+          type="text"
+          id="name"
+          autocomplete="given-name"
+          placeholder="Tu nombre"
+          class="w-full rounded-lg bg-white py-3 pl-4 pr-4 text-theme-text-primary ring-1 ring-gray-300 transition-all duration-200 focus:ring-2 focus:ring-theme-primary focus:outline-none"
+          name="name"
+          required
+        />
+      </div>
+
+      <div class="mx-0 mb-4">
+        <label
+          for="email"
+          class="block pb-2 text-xs font-semibold uppercase tracking-wider text-theme-text-primary"
+        >
+          Correo electrónico
+        </label>
+
+        <input
+          type="email"
+          id="email"
+          autocomplete="email"
+          placeholder="Tu correo electrónico"
+          class="w-full rounded-lg bg-white py-3 pl-4 pr-4 text-theme-text-primary ring-1 ring-gray-300 transition-all duration-200 focus:ring-2 focus:ring-theme-primary focus:outline-none"
+          name="email"
+          required
+        />
+      </div>
+
+    </div>
+
+    <div class="mx-0 mb-1 sm:mb-4">
+      <label
+        for="message"
+        class="block pb-2 text-xs font-semibold uppercase tracking-wider text-theme-text-primary"
+      >
+        Mensaje
+      </label>
+
+      <textarea
+        id="message"
+        name="message"
+        cols="30"
+        rows="5"
+        placeholder="Escribí tu mensaje..."
+        required
+        class="w-full rounded-lg bg-white py-3 pl-4 pr-4 text-theme-text-primary ring-1 ring-gray-300 transition-all duration-200 focus:ring-2 focus:ring-theme-primary focus:outline-none"
+      ></textarea>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <button
+      type="submit"
+      class="w-full rounded-lg bg-theme-primary px-6 py-3 text-lg font-semibold text-white transition-all duration-300 hover:bg-theme-primary-dark hover:shadow-lg sm:mb-0"
+    >
+      Enviar mensaje por WhatsApp
+    </button>
+  </div>
+
+  <p
+    id="contactFormStatus"
+    class="mt-3 text-sm font-medium text-theme-primary"
+    role="status"
+    aria-live="polite"
+  ></p>
+</form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  function setupContactForm() {
+    const form = document.getElementById("contactForm") as HTMLFormElement | null;
+    const status = document.getElementById("contactFormStatus");
+
+    if (!form || !status || form.dataset.bound === "true") return;
+
+    form.dataset.bound = "true";
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (!form.reportValidity()) return;
+
+      const name = (
+        document.getElementById("name") as HTMLInputElement
+      ).value;
+
+      const email = (
+        document.getElementById("email") as HTMLInputElement
+      ).value;
+
+      const message = (
+        document.getElementById("message") as HTMLTextAreaElement
+      ).value;
+
+      const phone = "5493412005190";
+
+      const whatsappMessage = `Hola, soy ${name}.
+
+Mi correo electrónico es: ${email}
+
+Quería consultarles lo siguiente:
+
+${message}`;
+
+      const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(
+        whatsappMessage
+      )}`;
+
+      window.open(whatsappUrl, "_blank");
+
+      status.textContent = "Abriendo WhatsApp...";
+    });
+  }
+
+  setupContactForm();
+
+  document.addEventListener("astro:page-load", setupContactForm);
+</script>

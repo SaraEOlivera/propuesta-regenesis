@@ -1,0 +1,50 @@
+{
+  "brand": {
+    "name": "Regénesis",
+    "logo": "Viva Medical"
+  },
+  "contact": {
+    "addressLine1": "Zona Noroeste, Barrio Belgrano",
+    "addressLine2": "Rosario, Argentina",
+    "phone": "+54 9 341 2005190",
+    "email": " asociacioncivilregenesis@gmail.com"
+  },
+    "social": [
+    {
+      "label": "Instagram",
+      "href": "https://www.instagram.com/regenesiscentrointegral/",
+      "icon": "instagram"
+    },
+    {
+      "label": "Facebook",
+      "href": "https://www.facebook.com/asociacioncivilRegenesis",
+      "icon": "facebook"
+    }
+  ],
+  "links": [
+    {
+      "label": "Inicio",
+      "href": "/",
+      "icon": "home"
+    },
+    {
+      "label": "Quiénes somos",
+      "href": "/about",
+      "icon": "info"
+    },
+    {
+      "label": "Servicios",
+      "href": "/services",
+      "icon": "clipboard"
+    },
+    {
+      "label": "Capacitaciones",
+      "href": "/careers",
+      "icon": "users"
+    }
+  ],
+  "cta": {
+    "label": "Contacto",
+    "href": "/contact"
+  }
+}
