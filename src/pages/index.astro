@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import seniorCareImage from "../assets/hero-main.jpg";
-import professionalCareImage from "../assets/professional-care.jpg";
+import nombreRegenesis from "../assets/por-que-regenesis.jpg";
 import teamMemberImage from "../assets/team-member.jpg";
 import heroServicesImage from "../assets/hero-services.jpg";
 import ServicesIntroSection from "../components/ServicesIntroSection.astro";
@@ -114,45 +114,56 @@ const serviceCards: ServiceCard[] = [
 					<p
 						class="text-sm font-medium tracking-widest uppercase text-theme-primary mb-4"
 					>
-						About Us
+						Sobre nosotros
 					</p>
-					<h2 class="mb-6">Bringing care to where you are</h2>
+					<h2 class="mb-6">¿Por qué nos llamamos Regénesis?</h2>
 					<p
 						class="text-theme-text-secondary text-lg leading-relaxed mb-6"
 					>
-						We specialize in delivering comprehensive medical care
-						directly to your home. No waiting rooms, no travel
-						stress—just quality healthcare in your comfort zone.
+					Detrás de nuestro nombre hay una convicción: toda persona tiene la 
+					capacidad de reconstruir su vida y reencontrarse con aquello para lo que
+					 fue creada.
+
 					</p>
-					<ul class="space-y-5 mb-6">
-						{
-							serviceCards.map((service) => (
-								<li class="flex items-start group">
-									<div class="flex-shrink-0 w-7 h-7 rounded-full bg-theme-primary-lighter/20 flex items-center justify-center mr-4 mt-0.5 group-hover:bg-theme-primary transition-colors duration-300">
-										<Icon
-											name="check"
-											size="sm"
-											class="text-theme-primary group-hover:text-white transition-colors duration-300"
-										/>
-									</div>
-									<span class="text-theme-text-secondary text-lg">
-										{service.description}
-									</span>
-								</li>
-							))
-						}
-					</ul>
-					<div class="text-center md:text-left">
+
+					<p
+						class="text-theme-text-secondary text-lg leading-relaxed mb-6"
+					>
+					Regenesis significa volver al origen. Volver a empezar. Regresar al propósito.
+					</p>
+
+					<p
+						class="text-theme-text-secondary text-lg leading-relaxed mb-6"
+					>
+					Porque más allá del dolor, de las adicciones, de las 
+					heridas que dejan las experiencias difíciles, hay algo 
+					que nunca se pierde del todo: una esencia valiosa, un 
+					propósito que sigue esperando ser recuperado.
+					</p>
+
+
+					<p
+						class="text-theme-text-secondary text-lg leading-relaxed mb-6"
+					>
+					Acompañamos a personas que atraviesan problemáticas de consumo desde 
+					una mirada integral —biológica, psicológica, social y espiritual— con 
+					contención, tratamiento y herramientas reales para construir una nueva 
+					forma de vivir.
+
+					</p>
+
+
+					<!-- <div class="text-center md:text-left">
 						<Link href="/about">Learn more about us</Link>
-					</div>
+					</div> -->
 				</div>
 				<div class="order-1 lg:order-2">
 					<div class="relative">
-						<div class="rounded-2xl overflow-hidden shadow-xl">
+						<div class="rounded-2xl overflow-hidden shadow-xl aspect-[4/3] w-full">
 							<Image
-								src={professionalCareImage}
-								alt="Healthcare provider with patient"
-								class="w-full h-auto"
+								src={nombreRegenesis}
+								alt="Por que nos llamamos Regenesis"
+								class="w-full h-full object-cover object-center"
 								loading="lazy"
 							/>
 						</div>
