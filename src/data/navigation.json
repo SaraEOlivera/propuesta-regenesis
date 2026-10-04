@@ -4,11 +4,23 @@
     "logo": "Viva Medical"
   },
   "contact": {
-    "addressLine1": "123 Healthcare Drive, Suite 200",
-    "addressLine2": "Springfield, IL 62701",
-    "phone": "+1 (555) 123-4567",
-    "email": "hello@example.com"
+    "addressLine1": "Zona Noroeste, Barrio Belgrano",
+    "addressLine2": "Rosario, Argentina",
+    "phone": "+54 9 341 2005190",
+    "email": " asociacioncivilregenesis@gmail.com"
   },
+    "social": [
+    {
+      "label": "Instagram",
+      "href": "https://www.instagram.com/regenesiscentrointegral/",
+      "icon": "instagram"
+    },
+    {
+      "label": "Facebook",
+      "href": "https://www.facebook.com/asociacioncivilRegenesis",
+      "icon": "facebook"
+    }
+  ],
   "links": [
     {
       "label": "Inicio",
@@ -21,12 +33,12 @@
       "icon": "info"
     },
     {
-      "label": "Servicios",
+      "label": "Informacion",
       "href": "/services",
       "icon": "clipboard"
     },
     {
-      "label": "Capacitaciones",
+      "label": "Actividades",
       "href": "/careers",
       "icon": "users"
     }

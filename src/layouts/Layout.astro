@@ -3,7 +3,6 @@
 import { ClientRouter } from "astro:transitions";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
-import ThemeSwitcher from "../components/ThemeSwitcher.astro";
 import "../styles/tailwind.css";
 import nav from "../data/navigation.json";
 
@@ -32,7 +31,7 @@ const defaultDescription =
     <meta property="og:title" content={title ?? defaultTitle} />
     <meta property="og:description" content={description ?? defaultDescription} />
     <!-- Theme Color -->
-    <meta name="theme-color" content="#1a4d3e" />
+    <meta name="theme-color" content="#1b3b6f" />
     <!-- Favicon placeholder - replace with your own -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!-- Client Router for smooth SPA-like navigation (Astro 7+) -->
@@ -53,8 +52,6 @@ const defaultDescription =
 			class="fixed top-0 left-0 h-1 bg-theme-primary z-[100] transition-all duration-300 ease-out"
 			style="width: 0%; opacity: 0;"
 		></div>
-    <!-- Theme Switcher -->
-    <ThemeSwitcher />
   </body>
 
   <script>
