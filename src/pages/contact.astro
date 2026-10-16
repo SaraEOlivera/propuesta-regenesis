@@ -241,29 +241,35 @@ import { Instagram, Facebook, Phone, Mail, MapPin, MessageCircle } from "lucide-
   function setupContactForm() {
     const form = document.getElementById("contactForm") as HTMLFormElement | null;
     const status = document.getElementById("contactFormStatus");
+    const nameInput = document.getElementById("name") as HTMLInputElement | null;
+    const emailInput = document.getElementById("email") as HTMLInputElement | null;
+    const messageInput = document.getElementById(
+      "message"
+    ) as HTMLTextAreaElement | null;
 
-    if (!form || !status || form.dataset.bound === "true") return;
+    if (
+      !form ||
+      !status ||
+      !nameInput ||
+      !emailInput ||
+      !messageInput ||
+      form.dataset.bound === "true"
+    ) {
+      return;
+    }
 
     form.dataset.bound = "true";
+
+    const phone = "5493412005190";
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
 
       if (!form.reportValidity()) return;
 
-      const name = (
-        document.getElementById("name") as HTMLInputElement
-      ).value;
-
-      const email = (
-        document.getElementById("email") as HTMLInputElement
-      ).value;
-
-      const message = (
-        document.getElementById("message") as HTMLTextAreaElement
-      ).value;
-
-      const phone = "5493412005190";
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const message = messageInput.value.trim();
 
       const whatsappMessage = `Hola, soy ${name}.
 
@@ -277,9 +283,16 @@ ${message}`;
         whatsappMessage
       )}`;
 
-      window.open(whatsappUrl, "_blank");
+      // "noopener,noreferrer" evita que la pestaña de WhatsApp acceda a window.opener
+      const opened = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
 
-      status.textContent = "Abriendo WhatsApp...";
+      if (opened) {
+        status.textContent = "Abriendo WhatsApp...";
+      } else {
+        // window.open devuelve null si el navegador bloquea la ventana emergente
+        status.textContent =
+          "No pudimos abrir WhatsApp. Revisá si el navegador bloqueó la ventana emergente.";
+      }
     });
   }
 

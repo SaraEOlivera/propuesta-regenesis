@@ -38,10 +38,10 @@ const defaultDescription =
     <ClientRouter />
   </head>
   <body
-		class="bg-theme-surface-muted font-sans text-theme-text-primary antialiased selection:bg-theme-primary-lighter/50 selection:text-theme-primary-darker"
+		class="flex min-h-dvh flex-col bg-theme-surface-muted font-sans text-theme-text-primary antialiased selection:bg-theme-primary-lighter/50 selection:text-theme-primary-darker"
 	>
     <Nav />
-    <main>
+    <main class="grow">
       <!-- The page-specific content will be injected here -->
       <slot>Regenes</slot>
     </main>
