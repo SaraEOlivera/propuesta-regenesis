@@ -5,6 +5,7 @@ import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/tailwind.css";
 import nav from "../data/navigation.json";
+import { withBase } from "../lib/url";
 
 interface Props {
 	title?: string;
@@ -33,7 +34,7 @@ const defaultDescription =
     <!-- Theme Color -->
     <meta name="theme-color" content="#1b3b6f" />
     <!-- Favicon placeholder - replace with your own -->
-    <link rel="icon" type="image/svg+xml" href="/reg_logo.ico" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/reg_logo.ico")} />
     <!-- Client Router for smooth SPA-like navigation (Astro 7+) -->
     <ClientRouter />
   </head>

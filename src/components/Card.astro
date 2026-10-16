@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import { withBase } from "../lib/url";
 
 interface Props {
   image: ImageMetadata;
@@ -11,7 +12,7 @@ interface Props {
 const { image, title, summary, link } = Astro.props;
 ---
 
-<a href={link} class="group block card overflow-hidden">
+<a href={withBase(link)} class="group block card overflow-hidden">
   <div class="aspect-[4/3] overflow-hidden">
     <Image
       src={image}

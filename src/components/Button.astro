@@ -1,6 +1,7 @@
 ---
 import type { ButtonVariant, ButtonSize } from "../types/design-system";
 import Icon from "./Icon.astro";
+import { withBase } from "../lib/url";
 
 interface Props {
   variant?: ButtonVariant;
@@ -29,7 +30,7 @@ const buttonClasses =
 
 {
   href ? (
-    <a href={href} class={buttonClasses} aria-label={ariaLabel}>
+    <a href={withBase(href)} class={buttonClasses} aria-label={ariaLabel}>
       <slot />
       {showIcon && (
         <Icon

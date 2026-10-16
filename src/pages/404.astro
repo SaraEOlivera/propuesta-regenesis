@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
 import Heading from "../components/Heading.astro";
+import { withBase } from "../lib/url";
 ---
 
 <Layout
@@ -34,13 +35,13 @@ Lo sentimos, no hemos podido encontrar la página que buscas. Es posible que la 
         </p>
         <div class="flex flex-wrap gap-4 justify-center text-sm">
           <a
-            href="/services"
+            href={withBase("/services")}
             class="text-theme-primary hover:text-theme-primary-dark font-medium"
             >Servicios</a
           >
           <span class="text-theme-border">•</span>
           <a
-            href="/about"
+            href={withBase("/about")}
             class="text-theme-primary hover:text-theme-primary-dark font-medium"
             >Sobre Nosotros</a
           >

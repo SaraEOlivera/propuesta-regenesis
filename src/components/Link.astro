@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import type { IconName } from '../types/icons';
+import { withBase } from '../lib/url';
 
 interface Props {
   href: string;
@@ -28,7 +29,7 @@ const variantClasses = {
 const linkClasses = `inline-flex items-center ${variantClasses[variant]} ${className}`.trim();
 ---
 
-<a href={href} class={linkClasses} aria-label={ariaLabel}>
+<a href={withBase(href)} class={linkClasses} aria-label={ariaLabel}>
   <slot />
   {showIcon && (
     <Icon

@@ -7,6 +7,7 @@ import Icon from "../components/Icon.astro";
 import CheckListItem from "../components/CheckListItem.astro";
 import professionalStaffImage from "../assets/professional-staff.jpg";
 import { Image } from "astro:assets";
+import { withBase } from "../lib/url";
 
 ---
 
@@ -206,7 +207,7 @@ import { Image } from "astro:assets";
             <!-- Application Links -->
             <div class="space-y-3">
               <a
-                href="/contact"
+                href={withBase("/contact")}
                 class="flex items-center justify-between p-3 bg-theme-surface-hover hover:bg-theme-primary-lighter/10 rounded-lg text-theme-primary hover:text-theme-primary-dark font-semibold transition-all duration-300 group border border-theme-border hover:border-theme-primary-lighter"
               >
                 <div class="flex items-center">
@@ -222,7 +223,7 @@ import { Image } from "astro:assets";
                 />
               </a>
               <a
-                href="/contact"
+                href={withBase("/contact")}
                 class="flex items-center justify-between p-3 bg-theme-surface-hover hover:bg-theme-primary-lighter/10 rounded-lg text-theme-primary hover:text-theme-primary-dark font-semibold transition-all duration-300 group border border-theme-border hover:border-theme-primary-lighter"
               >
                 <div class="flex items-center">
@@ -238,7 +239,7 @@ import { Image } from "astro:assets";
                 />
               </a>
               <a
-                href="/contact"
+                href={withBase("/contact")}
                 class="flex items-center justify-between p-3 bg-theme-surface-hover hover:bg-theme-primary-lighter/10 rounded-lg text-theme-primary hover:text-theme-primary-dark font-semibold transition-all duration-300 group border border-theme-border hover:border-theme-primary-lighter"
               >
                 <div class="flex items-center">
@@ -303,7 +304,7 @@ import { Image } from "astro:assets";
               Specific equipment operation training and procedures may be viewed
               through our comprehensive training resources.
               <a
-                href="/contact"
+                href={withBase("/contact")}
                 class="text-theme-primary hover:text-theme-primary-dark font-semibold transition-colors"
                 >Request training access</a
               >
@@ -393,7 +394,7 @@ import { Image } from "astro:assets";
             </p>
             <div class="space-y-3 mb-6">
               <a
-                href="/contact"
+                href={withBase("/contact")}
                 class="flex items-center text-theme-primary hover:text-theme-primary-dark font-semibold text-base transition-colors group"
               >
                 <Icon
@@ -404,7 +405,7 @@ import { Image } from "astro:assets";
                 <span>Request Prevention Training Part 1</span>
               </a>
               <a
-                href="/contact"
+                href={withBase("/contact")}
                 class="flex items-center text-theme-primary hover:text-theme-primary-dark font-semibold text-base transition-colors group"
               >
                 <Icon
@@ -420,11 +421,11 @@ import { Image } from "astro:assets";
             <div class="bg-white rounded-xl p-6 border border-blue-200">
               <p class="text-gray-700 mb-2 text-sm">
                 <strong class="text-gray-900">Submit forms:</strong>
-                <a href="/contact" class="text-theme-primary hover:text-theme-primary-dark font-semibold transition-colors ml-2">Contact Human Resources</a>
+                <a href={withBase("/contact")} class="text-theme-primary hover:text-theme-primary-dark font-semibold transition-colors ml-2">Contact Human Resources</a>
               </p>
               <p class="text-gray-700 text-sm">
                 <strong class="text-gray-900">Questions?</strong>
-                <a href="/contact" class="ml-2 text-theme-primary hover:text-theme-primary-dark font-semibold transition-colors">Contact the administrator</a>
+                <a href={withBase("/contact")} class="ml-2 text-theme-primary hover:text-theme-primary-dark font-semibold transition-colors">Contact the administrator</a>
               </p>
             </div>
           </div>

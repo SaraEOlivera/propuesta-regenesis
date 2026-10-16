@@ -1,6 +1,7 @@
 ---
 import Icon from "./Icon.astro";
 import nav from "../data/navigation.json";
+import { withBase } from "../lib/url";
 ---
 
 <footer class="bg-theme-primary-darker text-white py-8">
@@ -17,12 +18,12 @@ import nav from "../data/navigation.json";
       >
         {
           nav.links.map((link) => (
-            <a href={link.href} class="text-sm text-white hover:text-gray-300">
+            <a href={withBase(link.href)} class="text-sm text-white hover:text-gray-300">
               {link.label}
             </a>
           ))
         }
-        <a href={nav.cta.href} class="text-sm text-white hover:text-gray-300"
+        <a href={withBase(nav.cta.href)} class="text-sm text-white hover:text-gray-300"
           >{nav.cta.label}</a
         >
       </nav>
