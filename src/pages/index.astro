@@ -4,7 +4,7 @@ import { Image } from "astro:assets";
 import seniorCareImage from "../assets/hero-main.jpg";
 import nombreRegenesis from "../assets/por-que-regenesis.jpg";
 import mensaje from "../assets/seccion-mensaje.jpg";
-import heroServicesImage from "../assets/hero-services.jpg";
+import recuperarse from "../assets/recuperarse.jpg";
 import ServicesIntroSection from "../components/ServicesIntroSection.astro";
 import FaqAccordion from "../components/FaqAccordion.astro";
 import faqs from "../data/faqs.json";
@@ -185,7 +185,7 @@ const serviceCards: ServiceCard[] = [
 		<ServicesIntroSection />
 	</section>
 	
-	<!-- Statistics Section with Oval Design -->
+	<!-- Mensaje de acompañamiento con imagen -->
 	<section class="bg-theme-surface pt-4 pb-12 md:pt-8 md:pb-16">
 		<div class="container">
 			<div class="text-center mb-16">
@@ -247,8 +247,9 @@ const serviceCards: ServiceCard[] = [
 			</div>
 		</div>
 	</section>
+
 	<!-- FAQ Section -->
-	<section
+	<!-- <section
 		class="section bg-gradient-to-b from-theme-surface-muted to-theme-surface"
 	>
 		<div class="container">
@@ -267,26 +268,26 @@ const serviceCards: ServiceCard[] = [
 				</div>
 			</div>
 		</div>
-	</section>
+	</section> -->
+
 	<!-- CTA Section -->
 	<section class="relative py-20 lg:py-28 overflow-hidden">
 		<div class="absolute inset-0">
 			<Image
-				src={heroServicesImage}
+				src={recuperarse}
 				alt="Healthcare environment"
 				class="w-full h-full object-cover"
 				loading="lazy"
 			/>
-			<div class="absolute inset-0 bg-theme-primary-darker/90"></div>
+			<div class="absolute inset-0 bg-theme-primary-darker/60"></div>
 		</div>
 		<div class="relative container">
 			<div class="max-w-2xl mx-auto text-center text-white">
-				<h2 class="mb-6">Ready to get started?</h2>
-				<p class="text-lg mb-10 text-white/80 font-primary">
-					Contact us to discuss how we can support your healthcare
-					needs at home.
-				</p>
-				<Button variant="white" href="/contact"> Contact Us </Button>
+				<h2 class="mb-6 text-white/80">Recuperarse es un camino que se construye entre todos</h2>
+				<!-- <p class="text-lg mb-10 text-white/80 font-primary">
+					Comunicate para iniciar tu camino de recuperación.
+				</p> -->
+				<Button variant="white" href="/contact"> Contacto </Button>
 			</div>
 		</div>
 	</section>
