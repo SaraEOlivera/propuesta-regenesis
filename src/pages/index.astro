@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
-import seniorCareImage from "../assets/hero-main.jpg";
+import imagenCentral from "../assets/main-hero.jpg";
 import nombreRegenesis from "../assets/por-que-regenesis.jpg";
 import mensaje from "../assets/seccion-mensaje.jpg";
 import recuperarse from "../assets/recuperarse.jpg";
@@ -51,7 +51,7 @@ const serviceCards: ServiceCard[] = [
 	>
 		<div class="absolute inset-0 z-0">
 			<Image
-				src={seniorCareImage}
+				src={imagenCentral}
 				alt="Professional healthcare services"
 				class="w-full h-full object-cover object-top"
 				loading="eager"
@@ -78,7 +78,7 @@ const serviceCards: ServiceCard[] = [
 
 				<!-- 2. SUBTÍTULO (Más grande y muy pegado al título) -->
 				<p
-					class="text-xl md:text-2xl mb-4 opacity-95 leading-relaxed font-light max-w-lg"
+					class="text-xl md:text-2xl mb-4 text-white/60 opacity-95 leading-relaxed font-light max-w-lg"
 				>
 					Centro Integral en Adicciones
 				</p>
@@ -234,8 +234,9 @@ const serviceCards: ServiceCard[] = [
 						<p class="text-lg leading-relaxed">
 							Si hoy estás pasando un momento difícil, o alguien cercano lo está 
 							pasando, no tenés que hacerlo solo. En Regénesis acompañamos procesos
-							 de recuperación desde el respeto, la escucha y la comunidad. Si vos 
-							 o alguien que conocés lo necesita, estamos para acompañar. El cambio 
+							 de recuperación completos, con avances y retrocesos, desde el respeto, 
+							 la escucha y la comunidad. Si vos 
+							o alguien que conocés lo necesita, estamos para acompañar. El cambio 
 							 es posible. 
 
 						</p>
