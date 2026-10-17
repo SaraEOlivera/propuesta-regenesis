@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import seniorCareImage from "../assets/hero-main.jpg";
 import nombreRegenesis from "../assets/por-que-regenesis.jpg";
-import teamMemberImage from "../assets/team-member.jpg";
+import mensaje from "../assets/seccion-mensaje.jpg";
 import heroServicesImage from "../assets/hero-services.jpg";
 import ServicesIntroSection from "../components/ServicesIntroSection.astro";
 import FaqAccordion from "../components/FaqAccordion.astro";
@@ -210,40 +210,12 @@ const serviceCards: ServiceCard[] = [
 							class="aspect-[16/9] rounded-[50%] overflow-hidden shadow-2xl ring-1 ring-black/5"
 						>
 							<Image
-								src={teamMemberImage}
-								alt="Professional healthcare provider"
-								class="w-full h-full object-cover"
+								src={mensaje}
+								alt="Grupo de personas en comunidad"
+								class="w-full h-full object-cover sepia-[0.25] saturate-[1.15] brightness-[0.98]"
 								loading="lazy"
 							/>
-							Stats Overlay
-							<div
-								class="absolute inset-0 flex justify-between items-center px-4 stats-container"
-							>
-								<!-- Left Stat -->
-								<!-- <div
-									class="stats-circle w-28 h-28 md:w-36 md:h-36 bg-sky-600/95 rounded-full flex flex-col items-center justify-center text-white transform hover:scale-110 transition-all duration-300 shadow-2xl ring-4 ring-white/30"
-								>
-									<NumberCounter
-										number="500+"
-										class="text-xl md:text-2xl font-bold"
-									/>
-									<span class="text-xs mt-1 font-medium">
-										Monthly visits
-									</span>
-								</div> -->
-								<!-- Right Stat -->
-								<!-- <div
-									class="stats-circle w-28 h-28 md:w-36 md:h-36 bg-orange-500/95 rounded-full flex flex-col items-center justify-center text-white transform hover:scale-110 transition-all duration-300 shadow-2xl ring-4 ring-white/30"
-								>
-									<NumberCounter
-										number="75+"
-										class="text-xl md:text-2xl font-bold"
-									/>
-									<span class="text-xs mt-1 font-medium">
-										Professionals
-									</span>
-								</div> -->
-							</div>
+							
 						</div>
 					</div>
 				</div>
