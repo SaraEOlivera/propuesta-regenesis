@@ -9,71 +9,235 @@ import PageHero from "../components/PageHero.astro";
 import CallToActionSection from "../components/CallToActionSection.astro";
 import Icon from "../components/Icon.astro";
 import CheckListItem from "../components/CheckListItem.astro";
-import ServiceCard from "../components/ServiceCard.astro";
 import Heading from "../components/Heading.astro";
+ 
+const sections = [
+  { id: "informacion", label: "Qué son los consumos problemáticos" },
+  { id: "ayuda", label: "Si necesitás ayuda" },
+  { id: "familias", label: "Para familiares" },
+  { id: "materiales", label: "Materiales de orientación" },
+];
+ 
+const tiposDeConsumo = [
+  {
+    title: "Sustancias",
+    description:
+      "Alcohol, tabaco, cannabis, cocaína, psicofármacos usados sin indicación médica y otras drogas.",
+  },
+  {
+    title: "Pantallas y juegos",
+    description:
+      "Uso de celulares, redes y videojuegos que desplaza el estudio, el trabajo, el sueño o los vínculos.",
+  },
+  {
+    title: "Apuestas",
+    description:
+      "Juego de azar y apuestas online que generan deudas, ocultamiento o angustia.",
+  },
+];
+ 
+const senalesDeAlerta = [
+  "Cuesta controlar cuánto o cuándo se consume",
+  "El consumo ocupa cada vez más tiempo, dinero o pensamientos",
+  "Se abandonan actividades, estudios o vínculos que antes importaban",
+  "Aparecen malestar o ansiedad cuando no se puede consumir",
+  "Se consume a pesar de sus consecuencias en la salud, la familia o el trabajo",
+  "Se oculta o se minimiza lo que pasa",
+];
+ 
+const pasosParaPedirAyuda = [
+  {
+    title: "Hablar con alguien de confianza",
+    description:
+      "Contarle a una persona cercana lo que te pasa ayuda a dejar de cargarlo en soledad.",
+  },
+  {
+    title: "Pedir orientación",
+    description:
+      "Podés llamar a la Línea 141 o acercarte a un centro de salud, sin compromiso y sin tener que decidir nada en ese momento.",
+  },
+  {
+    title: "Hacer una primera consulta",
+    description:
+      "Un equipo profesional escucha tu situación y te propone opciones de acompañamiento acordes a lo que necesitás.",
+  },
+  {
+    title: "Armar un plan de tratamiento",
+    description:
+      "No existe un único camino: puede incluir terapia, grupos de apoyo, tratamiento ambulatorio o internación, según cada caso.",
+  },
+];
+ 
+const paraFamilias = {
+  hacer: [
+    "Hablar en un momento tranquilo, sin reproches y desde la preocupación",
+    "Escuchar sin interrumpir y sin juzgar",
+    "Informarte sobre el tema y pedir orientación profesional",
+    "Cuidarte: tu bienestar también importa",
+    "Acompañar los pasos que la persona quiera dar",
+  ],
+  evitar: [
+    "Gritar, amenazar o dar ultimátums",
+    "Etiquetar a la persona por su consumo",
+    "Esperar que cambie de un día para el otro",
+    "Cubrir las consecuencias o hacerte cargo de todo",
+    "Sentirte culpable: el consumo problemático tiene múltiples causas",
+  ],
+};
+ 
+const materiales = [
+  {
+    title: "Guía para entender los consumos problemáticos",
+    description:
+      "Conceptos básicos, señales de alerta y mitos frecuentes, en lenguaje simple.",
+    href: "/materiales/guia-consumos-problematicos.pdf",
+    format: "PDF",
+  },
+  {
+    title: "Cómo acompañar a un familiar",
+    description:
+      "Pautas para conversar, poner límites y cuidarte durante el acompañamiento.",
+    href: "/materiales/guia-para-familias.pdf",
+    format: "PDF",
+  },
+  {
+    title: "Primeros pasos para pedir ayuda",
+    description:
+      "Qué esperar de una primera consulta y qué opciones de tratamiento existen.",
+    href: "/materiales/primeros-pasos.pdf",
+    format: "PDF",
+  },
+  {
+    title: "Consumo de menor riesgo y prevención",
+    description:
+      "Información para jóvenes, docentes y equipos que trabajan con adolescentes.",
+    href: "/materiales/prevencion.pdf",
+    format: "PDF",
+  },
+];
 ---
-
+ 
 <Layout
-  title="Healthcare Services - Professional Home Care | Viva Medical"
-  description="Comprehensive healthcare services including chronic care management, post-surgical care, respiratory therapy, and specialized support. Expert care in the comfort of your home."
+  title="Información | Regénesis"
+  description="Información, orientación y materiales sobre consumos problemáticos, para personas que necesitan ayuda y para sus familias."
 >
-  <!-- Hero Section -->
-  <PageHero title="Cursos y capacitaciones" description="We specialize in comprehensive healthcare services supporting multiple treatment modalities and patient care needs. Our professional healthcare services are the cornerstone of our business. We provide specialized care for a broad spectrum of medical conditions and treatment requirements." image={heroServicesImage} />
-  <!-- Mission Statement -->
-  <section
-    class="section bg-gradient-to-b from-theme-surface to-theme-surface-muted"
-  >
+  <!-- Hero -->
+  <PageHero
+    title="Información y orientación sobre consumos problemáticos"
+    description="Información clara, materiales de orientación y acompañamiento para quienes atraviesan un consumo problemático y para sus familias. Pedir ayuda es un primer paso, y no hace falta darlo solo."
+    image={heroServicesImage}
+  />
+ 
+  <!-- Ayuda inmediata -->
+  <section class="section bg-theme-surface pb-0">
     <div class="container">
-      <div class="narrow mx-auto text-center space-y-6">
-        <Heading level="h2" align="center">Our Mission</Heading>
-        <p class="text-lg lg:text-xl text-theme-text-secondary leading-relaxed">
-          It is commonly accepted that the potential for patient progress and
-          recovery are substantially improved when patients are surrounded by
-          their native environment. Viva Medical passionately vows to
-          provide quality healthcare services to a broad spectrum of patients
-          within our expertise, experience and service skills.
-        </p>
-        <p
-          class="text-base lg:text-lg text-theme-text-secondary leading-relaxed"
-        >
-          Our compassionate, dedicated services are provided with dignity and
-          respect, available to individuals of all ages regardless of race,
-          color, sex, national origin, religion, age or disability.
-        </p>
-      </div>
-    </div>
-  </section>
-  <!-- Specialized Healthcare Services -->
-  <section
-    class="section bg-gradient-to-b from-theme-surface-muted to-theme-surface"
-  >
-    <div class="container">
-      <div class="narrow mx-auto text-center mb-12">
-        <Heading level="h2" align="center" class="mb-4">
-          Specialized Healthcare Services
-        </Heading>
-        <p class="text-base lg:text-lg text-theme-text-secondary">
-          Our highly trained professionals provide expert care for a
-          comprehensive range of healthcare services
-        </p>
-      </div>
       <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto"
+        class="max-w-5xl mx-auto bg-theme-primary-darker rounded-2xl p-8 lg:p-10 text-white flex flex-col lg:flex-row lg:items-center gap-6"
       >
-        <ServiceCard title="Primary Care" />
-        <ServiceCard title="Specialty Care" />
-        <ServiceCard title="Chronic Care Management" />
-        <ServiceCard title="Emergency Care Services" />
-        <ServiceCard title="Preventive Care" />
-        <ServiceCard title="Rehabilitation Services" />
-        <ServiceCard title="Post-Surgical Care" />
-        <ServiceCard title="Respiratory Therapy" />
-        <ServiceCard title="Pain Management" />
+        <Icon
+          name="heart"
+          size="xl"
+          class="text-theme-primary-lighter flex-shrink-0"
+        />
+        <div class="flex-1 space-y-2">
+          <h2 class="text-2xl font-bold">¿Necesitás hablar con alguien ahora?</h2>
+          <p class="text-white/90">
+            La Línea 141 de la SEDRONAR brinda orientación y contención en
+            adicciones. Es gratuita, anónima, funciona las 24 horas todos los
+            días y atiende tanto a quienes consumen como a sus familiares y
+            amigos. Si hay una emergencia o riesgo para la vida, llamá al 911.
+          </p>
+        </div>
+        <a
+          href="tel:141"
+          class="inline-flex items-center justify-center rounded-xl bg-white text-theme-primary-darker font-bold text-xl px-8 py-4 hover:bg-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
+          Llamar al 141
+        </a>
+      </div>
+ 
+      <!-- Navegación interna -->
+      <nav aria-label="Secciones de esta página" class="mt-8 max-w-5xl mx-auto">
+        <ul class="flex flex-wrap justify-center gap-3">
+          {
+            sections.map((s) => (
+              <li>
+                <a
+                  href={`#${s.id}`}
+                  class="inline-block rounded-full border border-theme-border bg-theme-surface px-5 py-2 text-theme-text-secondary hover:text-theme-primary hover:border-theme-primary transition-colors"
+                >
+                  {s.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </section>
+ 
+  <!-- 1. Información sobre consumos problemáticos -->
+  <section
+    id="informacion"
+    class="section scroll-mt-24 bg-gradient-to-b from-theme-surface to-theme-surface-muted"
+  >
+    <div class="container">
+      <div class="narrow mx-auto text-center space-y-6 mb-12">
+        <Heading level="h2" align="center">
+          Qué son los consumos problemáticos
+        </Heading>
+        <p class="text-lg lg:text-xl text-theme-text-secondary leading-relaxed">
+          Hablamos de consumo problemático cuando el uso de una sustancia o una
+          conducta empieza a afectar la salud, los vínculos, el estudio, el
+          trabajo o la vida cotidiana. No depende solo de la cantidad ni de la
+          frecuencia: importa cómo impacta en la persona y en su entorno.
+        </p>
+        <p class="text-base lg:text-lg text-theme-text-secondary leading-relaxed">
+          Es un problema de salud, no una falta de voluntad ni un defecto de
+          carácter. Tiene tratamiento, y las personas pueden recuperarse a
+          cualquier edad y en cualquier momento.
+        </p>
+      </div>
+ 
+      <div
+        class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16"
+      >
+        {
+          tiposDeConsumo.map((t) => (
+            <div class="bg-theme-surface rounded-xl p-6 lg:p-8 shadow-md border border-theme-border">
+              <h3 class="text-xl font-bold text-theme-text-primary mb-3">
+                {t.title}
+              </h3>
+              <p class="text-theme-text-secondary leading-relaxed">
+                {t.description}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+ 
+      <div
+        class="max-w-4xl mx-auto bg-gradient-to-br from-theme-primary-lighter/20 to-theme-surface rounded-xl p-6 lg:p-10 border border-theme-border"
+      >
+        <h3 class="text-2xl font-bold text-theme-text-primary mb-2">
+          Señales de alerta
+        </h3>
+        <p class="text-theme-text-secondary mb-6">
+          Ninguna señal alcanza por sí sola para dar un diagnóstico, pero si
+          reconocés varias, vale la pena consultar.
+        </p>
+        <ul class="space-y-3">
+          {senalesDeAlerta.map((s) => <CheckListItem>{s}</CheckListItem>)}
+        </ul>
       </div>
     </div>
   </section>
-  <!-- Patient Care Approach -->
-  <section class="section bg-theme-surface">
+ 
+  <!-- 2. Información para personas que necesitan ayuda -->
+  <section
+    id="ayuda"
+    class="section scroll-mt-24 bg-gradient-to-b from-theme-surface-muted to-theme-surface"
+  >
     <div class="container">
       <div
         class="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-16"
@@ -81,147 +245,67 @@ import Heading from "../components/Heading.astro";
         <div class="w-full order-2 lg:order-1">
           <Image
             src={professionalPortraitImage}
-            alt="Professional healthcare provider"
+            alt="Profesional de la salud escuchando a una persona"
             class="w-full object-cover rounded-2xl shadow-xl"
           />
         </div>
         <div class="space-y-6 order-1 lg:order-2">
-          <Heading level="h2">Our Patient Care Approach</Heading>
+          <Heading level="h2">Si necesitás ayuda</Heading>
           <p
             class="text-base lg:text-lg text-theme-text-secondary leading-relaxed"
           >
-            Dedication and service are at the core of our organization. We
-            incorporate compassion and empathy in conducting patient information
-            gathering, assessment, planning, intervention, evaluation and
-            education.
+            Si sentís que el consumo se te fue de las manos, o que te está
+            haciendo daño, no estás solo ni sola. Pedir ayuda no te
+            compromete a nada y no te define: es una forma de cuidarte.
           </p>
-          <div class="space-y-4">
-            <h4 class="text-lg font-semibold text-theme-text-primary">
-              Our agency manages and coordinates:
-            </h4>
-            <ul class="space-y-3">
-              <CheckListItem
-                >Patient intake and nursing assignments</CheckListItem
-              >
-              <CheckListItem>Treatment and therapy verification</CheckListItem>
-              <CheckListItem>Therapy scheduling</CheckListItem>
-              <CheckListItem
-                >Confirming the physician's plan of treatment (POT)</CheckListItem
-              >
-              <CheckListItem>Documenting patient status</CheckListItem>
-              <CheckListItem>Providing progress reports</CheckListItem>
-            </ul>
-          </div>
+          <ol class="space-y-5">
+            {
+              pasosParaPedirAyuda.map((p, i) => (
+                <li class="flex items-start gap-4">
+                  <span
+                    class="flex-shrink-0 w-9 h-9 rounded-full bg-theme-primary text-white font-bold flex items-center justify-center"
+                    aria-hidden="true"
+                  >
+                    {i + 1}
+                  </span>
+                  <div>
+                    <h3 class="font-semibold text-theme-text-primary mb-1">
+                      {p.title}
+                    </h3>
+                    <p class="text-theme-text-secondary">{p.description}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+          <p class="text-theme-text-secondary">
+            La consulta es confidencial. Si preferís empezar por teléfono,
+            podés llamar al <a
+              href="tel:141"
+              class="font-semibold text-theme-primary underline">141</a
+            > en cualquier momento.
+          </p>
         </div>
       </div>
     </div>
   </section>
-  <!-- Our Professional Staff -->
+ 
+  <!-- 3. Información para familiares -->
   <section
-    class="section bg-gradient-to-b from-theme-surface-muted to-theme-surface"
+    id="familias"
+    class="section scroll-mt-24 bg-theme-surface"
   >
     <div class="container">
-      <div
-        class="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-16"
-      >
-        <div class="space-y-6">
-          <Heading level="h2">Our Professional Staff</Heading>
-          <p
-            class="text-base lg:text-lg text-theme-text-secondary leading-relaxed"
-          >
-            Healthcare coordinators can rely upon our family of qualified
-            professionals to service their patient base, ensuring an optimal and
-            timely response to implementing medical treatment regimes.
-          </p>
-          <div
-            class="bg-theme-surface rounded-xl p-6 lg:p-8 shadow-md border border-theme-border"
-          >
-            <div class="space-y-4">
-              <div class="flex items-start gap-3">
-                <Icon
-                  name="check"
-                  size="md"
-                  class="text-theme-primary flex-shrink-0 mt-1"
-                />
-                <div>
-                  <h4 class="font-semibold text-theme-text-primary mb-1">
-                    Licensed Professionals
-                  </h4>
-                  <p class="text-theme-text-secondary">
-                    All healthcare providers are licensed in the states they
-                    service
-                  </p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <Icon
-                  name="check"
-                  size="md"
-                  class="text-theme-primary flex-shrink-0 mt-1"
-                />
-                <div>
-                  <h4 class="font-semibold text-theme-text-primary mb-1">
-                    Multi-State Coverage
-                  </h4>
-                  <p class="text-theme-text-secondary">
-                    Many professionals possess licensure in multiple states
-                  </p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <Icon
-                  name="check"
-                  size="md"
-                  class="text-theme-primary flex-shrink-0 mt-1"
-                />
-                <div>
-                  <h4 class="font-semibold text-theme-text-primary mb-1">
-                    Ongoing Education
-                  </h4>
-                  <p class="text-theme-text-secondary">
-                    Continuous professional development and training
-                    opportunities
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <p
-            class="text-base lg:text-lg text-theme-text-secondary leading-relaxed"
-          >
-            Viva Medical works in tandem with our healthcare professionals
-            and contracted partners to initiate a seamless process for the most
-            effective quality patient care.
-          </p>
-        </div>
-        <div class="w-full">
-          <Image
-            src={serviceDetailImage}
-            alt="Healthcare team coordination"
-            class="w-full object-cover rounded-2xl shadow-xl"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- Clinical Capabilities -->
-  <section class="section bg-theme-surface">
-    <div class="container">
-      <div class="text-center mb-12">
-        <Heading level="h2" align="center" class="mb-4">
-          Clinical Capabilities
-        </Heading>
-        <p
-          class="text-base lg:text-lg text-theme-text-secondary narrow mx-auto"
-        >
-          Viva Medical clinical capabilities and skills enable us to
-          provide services addressing a broad spectrum of healthcare needs and
-          treatment modalities
+      <div class="narrow mx-auto text-center space-y-4 mb-12">
+        <Heading level="h2" align="center">Para familiares y seres queridos</Heading>
+        <p class="text-base lg:text-lg text-theme-text-secondary leading-relaxed">
+          Cuando alguien cercano atraviesa un consumo problemático, toda la
+          familia se ve afectada. Es normal sentir miedo, enojo, cansancio o
+          culpa. Vos también podés pedir orientación y acompañamiento.
         </p>
       </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Chronic & Long-Term Care -->
+ 
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
         <div
           class="bg-gradient-to-br from-theme-primary-lighter/20 to-theme-surface rounded-xl p-6 lg:p-8 border border-theme-border"
         >
@@ -229,52 +313,17 @@ import Heading from "../components/Heading.astro";
             <div
               class="w-12 h-12 rounded-lg bg-theme-primary flex items-center justify-center flex-shrink-0"
             >
-              <Icon name="heart" size="lg" class="text-white" />
+              <Icon name="check" size="lg" class="text-white" />
             </div>
-            <h3 class="text-xl font-bold text-theme-text-primary">Chronic &amp; Long-Term Care</h3>
+            <h3 class="text-xl font-bold text-theme-text-primary">
+              Qué te puede ayudar
+            </h3>
           </div>
           <ul class="space-y-3">
-            <CheckListItem>
-              Chronic disease management for diabetes, hypertension, and heart
-              disease
-            </CheckListItem>
-            <CheckListItem>
-              Cardiac care and cardiovascular disease support
-            </CheckListItem>
-            <CheckListItem>
-              Respiratory care for chronic conditions
-            </CheckListItem>
-            <CheckListItem>
-              Infectious disease management and complex infections
-            </CheckListItem>
+            {paraFamilias.hacer.map((t) => <CheckListItem>{t}</CheckListItem>)}
           </ul>
         </div>
-        <!-- Surgical & Recovery -->
-        <div
-          class="bg-gradient-to-br from-[color:var(--color-theme-accent-sky)]/20 to-theme-surface rounded-xl p-6 lg:p-8 border border-theme-border"
-        >
-          <div class="flex items-center gap-3 mb-6">
-            <div
-              class="w-12 h-12 rounded-lg bg-[color:var(--color-theme-accent-sky)] flex items-center justify-center flex-shrink-0"
-            >
-              <Icon name="medical" size="lg" class="text-white" />
-            </div>
-            <h3 class="text-xl font-bold text-theme-text-primary">Surgical &amp; Recovery</h3>
-          </div>
-          <ul class="space-y-3">
-            <CheckListItem>
-              Post-surgical care and recovery support
-            </CheckListItem>
-            <CheckListItem>
-              Physical therapy and rehabilitation services
-            </CheckListItem>
-            <CheckListItem>
-              Pain management strategies and support
-            </CheckListItem>
-            <CheckListItem>Initial consultation and assessment</CheckListItem>
-          </ul>
-        </div>
-        <!-- Specialized Treatment -->
+ 
         <div
           class="bg-gradient-to-br from-[color:var(--color-theme-accent-orange)]/20 to-theme-surface rounded-xl p-6 lg:p-8 border border-theme-border"
         >
@@ -285,48 +334,87 @@ import Heading from "../components/Heading.astro";
               <Icon name="star" size="lg" class="text-white" />
             </div>
             <h3 class="text-xl font-bold text-theme-text-primary">
-              Specialized Treatment
+              Qué conviene evitar
             </h3>
           </div>
           <ul class="space-y-3">
-            <CheckListItem>Oncology support services</CheckListItem>
-            <CheckListItem>Hormone therapy and endocrine care</CheckListItem>
-            <CheckListItem>
-              Subcutaneous medication administration
-            </CheckListItem>
-            <CheckListItem>Anti-inflammatory therapy</CheckListItem>
-            <CheckListItem>
-              Nutritional support and dietary counseling
-            </CheckListItem>
-            <CheckListItem>Mental health and wellness support</CheckListItem>
+            {paraFamilias.evitar.map((t) => <CheckListItem>{t}</CheckListItem>)}
           </ul>
         </div>
       </div>
-      <!-- Research Notice -->
+ 
       <div
-        class="mt-12 bg-theme-primary-darker rounded-2xl p-8 lg:p-12 text-center text-white"
+        class="mt-12 max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-8 lg:gap-12"
       >
-        <Icon
-          name="star"
-          size="xl"
-          class="mx-auto mb-4 text-theme-primary-lighter"
+        <Image
+          src={serviceDetailImage}
+          alt="Familia conversando con un profesional"
+          class="w-full object-cover rounded-2xl shadow-xl"
         />
-        <h3 class="text-2xl font-bold mb-4">Research &amp; Clinical Trials</h3>
-        <p class="text-lg text-white/90 narrow mx-auto">
-          We actively participate in research and clinical trial programs,
-          staying at the forefront of healthcare innovation to bring the latest
-          treatments to our patients.
+        <div class="space-y-4">
+          <h3 class="text-2xl font-bold text-theme-text-primary">
+            No tenés que hacerlo solo ni sola
+          </h3>
+          <p class="text-theme-text-secondary leading-relaxed">
+            Llamar al 141 también es una opción si la persona todavía no quiere
+            pedir ayuda: un equipo profesional te orienta sobre cómo
+            acercarte, qué decir y a dónde acudir. Cerca del 40% de las
+            consultas a la línea las hacen familiares y amigos.
+          </p>
+          <p class="text-theme-text-secondary leading-relaxed">
+            Cuidar tu propia salud y tus tiempos no es egoísmo: es parte de
+            poder acompañar.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- 4. Materiales de orientación -->
+  <section
+    id="materiales"
+    class="section scroll-mt-24 bg-gradient-to-b from-theme-surface to-theme-surface-muted"
+  >
+    <div class="container">
+      <div class="narrow mx-auto text-center space-y-4 mb-12">
+        <Heading level="h2" align="center">Materiales de orientación</Heading>
+        <p class="text-base lg:text-lg text-theme-text-secondary">
+          Guías y recursos para leer, descargar y compartir.
         </p>
+      </div>
+ 
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        {
+          materiales.map((m) => (
+            <a
+              href={m.href}
+              class="group block bg-theme-surface rounded-xl p-6 lg:p-8 shadow-md border border-theme-border hover:border-theme-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-theme-primary transition-colors"
+            >
+              <span class="inline-block text-sm font-semibold text-theme-primary mb-2">
+                {m.format}
+              </span>
+              <h3 class="text-xl font-bold text-theme-text-primary mb-2 group-hover:text-theme-primary">
+                {m.title}
+              </h3>
+              <p class="text-theme-text-secondary leading-relaxed">
+                {m.description}
+              </p>
+              <span class="inline-block mt-4 font-semibold text-theme-primary">
+                Descargar
+              </span>
+            </a>
+          ))
+        }
       </div>
     </div>
   </section>
 
   <CallToActionSection
-    heading="Ready for Professional Healthcare Services?"
-    subheading="Our expert healthcare team serves the regional area including multiple states and communities. Let us bring professional healthcare directly to your home."
-    primaryButtonText="Schedule a Consultation"
+    heading="Estamos para escucharte"
+    subheading="Si necesitás orientación o querés conocer más sobre Regénesis, ponete en contacto con nosotros."
+    primaryButtonText="Contactanos"
     primaryButtonLink="/contact"
-    secondaryButtonText="Join Our Healthcare Team"
+    secondaryButtonText="Conocé nuestras actividades"
     secondaryButtonLink="/careers"
   />
 </Layout>
