@@ -23,7 +23,14 @@ El proyecto está desarrollado con:
 
 Antes de comenzar, es necesario tener instalado:
 
-- [Node.js](https://nodejs.org/) versión `22.23.4` o superior.
+- [Node.js](https://nodejs.org/) versión `22.23.4` o superior (se recomienda la versión LTS actual, Node.js 24).
+
+La versión de Node.js del proyecto está fijada en [`.nvmrc`](./.nvmrc). Si usás [nvm](https://github.com/nvm-sh/nvm), podés instalarla y activarla con:
+
+```bash
+nvm install
+nvm use
+```
 
 ## Instalación
 
