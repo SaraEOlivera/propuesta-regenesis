@@ -181,20 +181,11 @@ content:
         description: Muestra un aviso en la página mientras los datos de transferencia sean provisionales. Desactivar cuando se carguen los datos reales.
 
   - name: navegacion
-    label: Datos de contacto y navegación
+    label: Datos de contacto y redes sociales
     type: file
     path: src/data/navegacion.json
     format: json
     fields:
-      - name: brand
-        label: Marca
-        type: object
-        fields:
-          - name: name
-            label: Nombre de la organización
-            type: string
-            required: true
-
       - name: contact
         label: Contacto
         type: object
@@ -234,22 +225,3 @@ content:
             type: select
             options:
               values: [instagram, facebook]
-
-      - name: links
-        label: Enlaces de navegación
-        type: object
-        list: true
-        fields:
-          - name: label
-            label: Nombre
-            type: string
-            required: true
-          - name: href
-            label: Ruta
-            type: string
-            required: true
-          - name: icon
-            label: Icono
-            type: select
-            options:
-              values: [home, info, clipboard, calendar]

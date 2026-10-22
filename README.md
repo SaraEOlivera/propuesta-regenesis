@@ -13,7 +13,7 @@ El proyecto está desarrollado con:
 - **Astro** — Framework principal para el desarrollo del sitio.
 - **TypeScript** — Tipado y mayor seguridad durante el desarrollo.
 - **Tailwind CSS v4** — Estilos y diseño responsive.
-- **Pages CMS** — Panel para administrar las actividades sin tocar código.
+- **Pages CMS** — Panel para administrar las actividades, los datos de pago y los datos de contacto sin tocar código.
 - **Git / GitHub** — Control de versiones y trabajo colaborativo.
 - **npm** — Gestión de dependencias.
 
@@ -179,7 +179,7 @@ Incluye:
 - Redes sociales.
 - Formulario de contacto, con aviso de privacidad.
 
-Los datos de contacto y los enlaces de navegación se editan desde Pages CMS (sección **Datos de contacto y navegación**, archivo `src/data/navegacion.json`).
+Los datos de contacto y las redes sociales se editan desde Pages CMS (sección **Datos de contacto y redes sociales**, archivo `src/data/navegacion.json`). La marca y los enlaces de navegación se mantienen en `src/lib/nav.ts` y se cambian desde código.
 
 ### Privacidad
 
