@@ -1,0 +1,50 @@
+---
+import AcompaniamientoImg from "../assets/actividades/acompanamiento.jpg";
+import biopsicosocial from "../assets/actividades/charla-escucha.jpg";
+import vidaComunidad from "../assets/actividades/taller-oficios.jpg";
+import Card from "./Card.astro";
+import SectionHeading from "./SectionHeading.astro";
+import { rutas } from "../lib/rutas";
+
+const propuestas = [
+  {
+    title: "Acompañamiento integral",
+    summary:
+      "Contención, tratamiento y herramientas para personas que atraviesan consumos problemáticos",
+    image: AcompaniamientoImg,
+    link: `${rutas.informacion}#ayuda`,
+  },
+  {
+    title: "Mirada biopsicosocial y espiritual",
+    summary: "Trabajamos la persona en su totalidad: cuerpo, mente, vínculos y espíritu.",
+    image: biopsicosocial,
+    link: `${rutas.quienesSomos}#mision`,
+  },
+  {
+    title: "Vida y comunidad",
+    summary: "Promovemos vínculos saludables, responsabilidad y proyectos de vida significativos.",
+    image: vidaComunidad,
+    link: rutas.actividades,
+  },
+];
+---
+
+<div class="container">
+  <SectionHeading
+    align="center"
+    eyebrow="Nuestras propuestas"
+    title="¿Qué hacemos en Regénesis?"
+    class="mb-12"
+  />
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+    {propuestas.map((propuesta) => (
+      <Card
+        title={propuesta.title}
+        summary={propuesta.summary}
+        image={propuesta.image}
+        link={propuesta.link}
+      />
+    ))}
+  </div>
+</div>

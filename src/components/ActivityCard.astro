@@ -1,0 +1,155 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import Icon from "./Icon.astro";
+import Button from "./Button.astro";
+import ActivityTypeBadge from "./ActivityTypeBadge.astro";
+import { placeholderStyle } from "../lib/images";
+import {
+  ACTIVITY_TYPE_META,
+  MODALITY_LABELS,
+  activityHref,
+  formatActivityDate,
+  formatActivityTime,
+  getActivityPhotos,
+  getActivitySlug,
+  getDateBadge,
+  isUpcoming,
+} from "../lib/actividades";
+
+interface Props {
+  activity: CollectionEntry<"actividades">;
+  variant?: "default" | "compact";
+  /** Carga anticipada para portadas que quedan dentro del primer viewport. */
+  priority?: boolean;
+  class?: string;
+}
+
+const { activity, variant = "default", priority = false, class: className = "" } = Astro.props;
+
+const { data } = activity;
+const isCompact = variant === "compact";
+const typeMeta = ACTIVITY_TYPE_META[data.type];
+const cover = data.cover;
+const coverPlaceholder = !isCompact && cover ? await placeholderStyle(cover) : "";
+const photos = isCompact ? [] : getActivityPhotos(activity);
+const href = activityHref(getActivitySlug(activity));
+const dateLabel = formatActivityDate(data.date);
+const timeLabel = formatActivityTime(data.time, data.endTime);
+const dateBadge = getDateBadge(data.date);
+const modalityLabel = MODALITY_LABELS[data.modality];
+const isUpcomingActivity = isUpcoming(data.date);
+
+const metaItems = [
+  {
+    icon: "calendar" as const,
+    text: [dateLabel, timeLabel].filter(Boolean).join(" · "),
+  },
+  {
+    icon: "location" as const,
+    text: [data.location, modalityLabel].filter(Boolean).join(" · "),
+  },
+];
+
+const articleClass = isCompact
+  ? "card card-interactive group flex h-full flex-col p-6"
+  : "card card-interactive group flex h-full flex-col overflow-hidden";
+---
+
+<article class:list={[articleClass, className]} data-activity-card data-activity-type={data.type}>
+  {!isCompact && (
+    <div class="relative aspect-[16/10] overflow-hidden">
+      {cover ? (
+        <Image
+          src={cover}
+          alt={data.coverAlt ?? data.title}
+          widths={[320, 480, 640, 800]}
+          sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 90vw"
+          loading={priority ? "eager" : "lazy"}
+          fetchpriority={priority ? "high" : undefined}
+          quality={65}
+          class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          style={coverPlaceholder}
+        />
+      ) : (
+        <div
+          class:list={[
+            "flex h-full w-full flex-col items-center justify-center gap-3 bg-gradient-to-br",
+            typeMeta.coverClass,
+          ]}
+        >
+          <Icon name={typeMeta.icon} size="xl" />
+          <span class="text-sm font-bold uppercase tracking-widest">{typeMeta.label}</span>
+        </div>
+      )}
+
+      {isUpcomingActivity && (
+        <span class="absolute left-4 top-4 rounded-full bg-theme-primary-solid px-3 py-1 text-xs font-bold uppercase tracking-wide text-white shadow-md">
+          Próxima
+        </span>
+      )}
+
+      {photos.length > 0 && (
+        <span class="absolute bottom-4 right-4 inline-flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+          <Icon name="image" size="sm" />
+          {photos.length} {photos.length === 1 ? "foto" : "fotos"}
+        </span>
+      )}
+    </div>
+  )}
+
+  <div class:list={["flex flex-1 flex-col", !isCompact && "p-6"]}>
+    {isCompact ? (
+      <div class="flex items-start justify-between gap-4">
+        <div class="flex shrink-0 flex-col items-center rounded-xl bg-theme-primary-solid px-3 py-2 text-center text-white">
+          <span class="text-2xl font-bold leading-none">{dateBadge.day}</span>
+          <span class="mt-1 text-[0.65rem] font-bold tracking-widest">{dateBadge.month}</span>
+        </div>
+        <ActivityTypeBadge type={data.type} />
+      </div>
+    ) : (
+      <ActivityTypeBadge type={data.type} class="self-start" />
+    )}
+
+    <h3
+      class:list={[
+        "text-xl font-bold leading-tight text-theme-text-primary",
+        isCompact ? "mt-5" : "mt-4",
+      ]}
+    >
+      <a href={href} class="transition-colors hover:text-theme-primary">
+        {data.title}
+      </a>
+    </h3>
+
+    <ul class="mt-3 space-y-1.5 text-sm text-theme-text-muted">
+      {metaItems.map((item) => (
+        <li class="flex items-start gap-2">
+          <Icon name={item.icon} size="sm" class="mt-0.5 shrink-0 text-theme-primary" />
+          <span>{item.text}</span>
+        </li>
+      ))}
+    </ul>
+
+    <p class:list={["mt-4 text-theme-text-secondary", isCompact ? "line-clamp-2" : "line-clamp-3"]}>
+      {data.summary}
+    </p>
+
+    <div class="mt-auto flex flex-wrap items-center justify-between gap-3 pt-5">
+      <a href={href} class="inline-flex items-center gap-1 font-semibold text-theme-primary">
+        Ver actividad
+        <Icon
+          name="chevron-right"
+          size="sm"
+          class="transition-transform group-hover:translate-x-1"
+        />
+      </a>
+
+      {!isCompact && data.registrationUrl && isUpcomingActivity && (
+        <Button href={data.registrationUrl} class="text-sm">
+          Inscribirme
+        </Button>
+      )}
+    </div>
+  </div>
+</article>

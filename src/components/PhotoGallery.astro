@@ -1,0 +1,160 @@
+---
+import { Image, getImage } from "astro:assets";
+import Icon from "./Icon.astro";
+import type { ActivityPhoto } from "../lib/actividades";
+import { placeholderStyle } from "../lib/images";
+
+interface Props {
+  photos: ActivityPhoto[];
+  limit?: number;
+  columns?: 2 | 3 | 4;
+  class?: string;
+}
+
+const { photos, limit, columns = 3, class: className = "" } = Astro.props;
+
+const visiblePhotos = typeof limit === "number" ? photos.slice(0, limit) : photos;
+
+const items = await Promise.all(
+  visiblePhotos.map(async (photo) => ({
+    ...photo,
+    placeholder: await placeholderStyle(photo.src),
+    dialogSrc: (
+      await getImage({
+        src: photo.src,
+        width: 1400,
+        format: "webp",
+        quality: 75,
+      })
+    ).src,
+  })),
+);
+
+const columnClasses: Record<number, string> = {
+  2: "grid-cols-2",
+  3: "grid-cols-2 md:grid-cols-3",
+  4: "grid-cols-2 md:grid-cols-4",
+};
+---
+
+{visiblePhotos.length > 0 && (
+  <div class:list={[className]} data-activity-gallery>
+    <div class:list={["grid gap-3", columnClasses[columns]]}>
+      {items.map((photo) => (
+        <button
+          type="button"
+          class="group relative aspect-square overflow-hidden rounded-2xl border border-theme-border bg-theme-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-primary"
+          data-gallery-open
+          data-full-src={photo.dialogSrc}
+          data-alt={photo.alt}
+          aria-label={`Ampliar foto: ${photo.alt}`}
+        >
+          <Image
+            src={photo.src}
+            alt={photo.alt}
+            widths={[240, 480, 720]}
+            sizes="(min-width: 768px) 33vw, 50vw"
+            loading="lazy"
+            quality={65}
+            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            style={photo.placeholder}
+          />
+          <span
+            class="absolute inset-0 flex items-end justify-end bg-gradient-to-t from-black/45 via-transparent to-transparent p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            aria-hidden="true"
+          >
+            <Icon name="image" size="md" class="text-white" />
+          </span>
+        </button>
+      ))}
+    </div>
+
+    <dialog
+      data-gallery-dialog
+      aria-label="Foto ampliada"
+      class="m-auto w-[min(94vw,1100px)] max-w-none rounded-2xl border border-white/10 bg-theme-primary-darker p-2 text-white shadow-2xl backdrop:bg-black/80 backdrop:backdrop-blur-sm"
+    >
+      <div class="relative">
+        <button
+          type="button"
+          data-gallery-close
+          class="absolute right-3 top-3 z-10 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          aria-label="Cerrar foto ampliada"
+        >
+          <Icon name="close" size="md" />
+        </button>
+
+        <img data-gallery-image alt="" class="max-h-[80vh] w-full rounded-xl object-contain" />
+
+        <p
+          data-gallery-caption
+          class="px-4 py-3 text-sm leading-relaxed text-white/80"
+          aria-live="polite"
+        ></p>
+      </div>
+    </dialog>
+  </div>
+)}
+
+<script>
+  function setupActivityGalleries() {
+    document.querySelectorAll<HTMLElement>("[data-activity-gallery]").forEach((gallery) => {
+      if (gallery.dataset.ready === "true") return;
+      gallery.dataset.ready = "true";
+
+      const dialog = gallery.querySelector<HTMLDialogElement>("[data-gallery-dialog]");
+      const image = dialog?.querySelector<HTMLImageElement>("[data-gallery-image]");
+      const caption = dialog?.querySelector<HTMLElement>("[data-gallery-caption]");
+      const close = dialog?.querySelector<HTMLButtonElement>("[data-gallery-close]");
+      const triggers = Array.from(
+        gallery.querySelectorAll<HTMLButtonElement>("[data-gallery-open]"),
+      );
+
+      if (!dialog || !image || !caption || triggers.length === 0) return;
+
+      let currentIndex = 0;
+      let lastTrigger: HTMLButtonElement | null = null;
+
+      const showPhoto = (index: number) => {
+        const trigger = triggers[index];
+        if (!trigger) return;
+
+        currentIndex = index;
+        image.src = trigger.dataset.fullSrc ?? "";
+        image.alt = trigger.dataset.alt ?? "";
+        caption.textContent = trigger.dataset.alt ?? "";
+      };
+
+      triggers.forEach((button, index) => {
+        button.addEventListener("click", () => {
+          lastTrigger = button;
+          showPhoto(index);
+          dialog.showModal();
+        });
+      });
+
+      close?.addEventListener("click", () => dialog.close());
+
+      dialog.addEventListener("click", (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+
+      dialog.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          showPhoto((currentIndex + 1) % triggers.length);
+        } else if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          showPhoto((currentIndex - 1 + triggers.length) % triggers.length);
+        }
+      });
+
+      dialog.addEventListener("close", () => {
+        lastTrigger?.focus();
+        lastTrigger = null;
+      });
+    });
+  }
+
+  setupActivityGalleries();
+</script>

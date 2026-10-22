@@ -2,49 +2,64 @@
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
 import Heading from "../components/Heading.astro";
+import { acciones } from "../lib/acciones";
+import { rutas } from "../lib/rutas";
 import { withBase } from "../lib/url";
 ---
 
 <Layout
-  title="Page Not Found - Viva Medical"
-  description="The page you're looking for could not be found."
+  title="Página no encontrada | Regénesis"
+  description="No pudimos encontrar la página que buscás."
+  noindex
 >
-  <section class="min-h-[70vh] flex items-center justify-center px-4 section">
+  <section class="min-h-[70vh] flex items-center justify-center section">
     <div class="max-w-2xl mx-auto text-center">
-      <!-- 404 Number -->
+      <!-- Número 404 -->
       <div class="mb-8">
         <p class="text-9xl font-bold text-theme-primary/20 select-none">404</p>
       </div>
-      <!-- Heading -->
-      <Heading level="h1" size="section" class="mb-4">Page Not Found</Heading>
-      <!-- Description -->
+      <!-- Título -->
+      <Heading level="h1" size="page" class="mb-4">
+        Página no encontrada
+      </Heading>
+      <!-- Descripción -->
       <p class="text-lg text-theme-text-secondary mb-8 max-w-md mx-auto">
-Lo sentimos, no hemos podido encontrar la página que buscas. Es posible que la página se haya movido o que no exista.
+        Lo sentimos, no pudimos encontrar la página que buscás. Es posible que se haya movido o que
+        no exista.
       </p>
-      <!-- Actions -->
+      <!-- Acciones -->
       <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <Button variant="primary" href="/" showIcon={true}>
-          Volver al Inicio
+        <Button variant="primary" href={rutas.inicio} showIcon={true}>
+          Volver al inicio
         </Button>
-        <Button variant="white-outline" href="/contact">Contact Us</Button>
+        <Button variant="outline" href={acciones.contacto.href}>
+          {acciones.contacto.label}
+        </Button>
       </div>
-      <!-- Helpful Links -->
+      <!-- Enlaces útiles -->
       <div class="mt-12 pt-8 border-t border-theme-border">
-        <p class="text-sm text-theme-text-muted mb-4">
-          Es posible que estés buscando:
-        </p>
+        <p class="text-sm text-theme-text-muted mb-4">Quizás estés buscando:</p>
         <div class="flex flex-wrap gap-4 justify-center text-sm">
           <a
-            href={withBase("/services")}
-            class="text-theme-primary hover:text-theme-primary-dark font-medium"
-            >Servicios</a
+            href={withBase(rutas.informacion)}
+            class="text-theme-primary hover:text-theme-primary-hover font-medium"
           >
+            Información
+          </a>
           <span class="text-theme-border">•</span>
           <a
-            href={withBase("/about")}
-            class="text-theme-primary hover:text-theme-primary-dark font-medium"
-            >Sobre Nosotros</a
+            href={withBase(rutas.quienesSomos)}
+            class="text-theme-primary hover:text-theme-primary-hover font-medium"
           >
+            Quiénes somos
+          </a>
+          <span class="text-theme-border">•</span>
+          <a
+            href={withBase(rutas.actividades)}
+            class="text-theme-primary hover:text-theme-primary-hover font-medium"
+          >
+            Actividades
+          </a>
         </div>
       </div>
     </div>

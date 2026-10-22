@@ -1,35 +1,49 @@
 ---
-import Icon from './Icon.astro';
-import type { IconName } from '../types/icons';
-import { withBase } from '../lib/url';
+import Icon from "./Icon.astro";
+import type { IconName } from "../types/icons";
+import { isExternalHref, withBase } from "../lib/url";
 
 interface Props {
   href: string;
-  variant?: 'primary' | 'inline';
+  variant?: "primary" | "inline";
   showIcon?: boolean;
   iconName?: IconName;
   class?: string;
   ariaLabel?: string;
+  target?: string;
+  rel?: string;
 }
 
 const {
   href,
-  variant = 'primary',
+  variant = "primary",
   showIcon = true,
-  iconName = 'chevron-right',
-  class: className = '',
+  iconName = "chevron-right",
+  class: className = "",
   ariaLabel,
+  target,
+  rel,
 } = Astro.props;
 
 const variantClasses = {
-  primary: 'link-primary text-lg group transition-colors',
-  inline: 'link-primary',
+  primary: "link-primary text-lg group transition-colors",
+  inline: "link-primary",
 };
 
 const linkClasses = `inline-flex items-center ${variantClasses[variant]} ${className}`.trim();
+
+const esExterno = isExternalHref(href);
+const linkTarget = target ?? (esExterno ? "_blank" : undefined);
+const linkRel = rel ?? (esExterno ? "noopener noreferrer" : undefined);
 ---
 
-<a href={withBase(href)} class={linkClasses} aria-label={ariaLabel}>
+<a
+  href={withBase(href)}
+  class={linkClasses}
+  aria-label={ariaLabel}
+  target={linkTarget}
+  rel={linkRel}
+>
   <slot />
   {showIcon && (
     <Icon
@@ -38,4 +52,5 @@ const linkClasses = `inline-flex items-center ${variantClasses[variant]} ${class
       class="ml-2 group-hover:translate-x-1 transition-transform duration-300"
     />
   )}
+  {esExterno && !ariaLabel && <span class="sr-only"> (se abre en una nueva pestaña)</span>}
 </a>

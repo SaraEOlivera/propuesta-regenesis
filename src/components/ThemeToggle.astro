@@ -1,0 +1,115 @@
+---
+import Icon from "./Icon.astro";
+---
+
+<button
+  type="button"
+  data-theme-toggle
+  class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-theme-border bg-theme-surface text-theme-text-secondary transition-colors hover:border-theme-primary hover:text-theme-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-primary"
+  aria-label="Tema automático. Cambiar a claro"
+  title="Tema: Automático"
+>
+  <span data-theme-icon="auto" class="items-center justify-center">
+    <Icon name="monitor" size="md" />
+  </span>
+  <span data-theme-icon="light" class="items-center justify-center">
+    <Icon name="sun" size="md" />
+  </span>
+  <span data-theme-icon="dark" class="items-center justify-center">
+    <Icon name="moon" size="md" />
+  </span>
+</button>
+
+<script>
+  type ThemeMode = "auto" | "light" | "dark";
+
+  const STORAGE_KEY = "regenesis-theme";
+  const MODES: ThemeMode[] = ["auto", "light", "dark"];
+  const LABELS: Record<ThemeMode, string> = {
+    auto: "automático",
+    light: "claro",
+    dark: "oscuro",
+  };
+  const NEXT: Record<ThemeMode, string> = {
+    auto: "claro",
+    light: "oscuro",
+    dark: "automático",
+  };
+
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function readMode(): ThemeMode {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved === "auto" || saved === "light" || saved === "dark") {
+        return saved;
+      }
+    } catch {
+      // localStorage can be unavailable in private contexts
+    }
+    return "auto";
+  }
+
+  function saveMode(mode: ThemeMode) {
+    try {
+      localStorage.setItem(STORAGE_KEY, mode);
+    } catch {
+      // Ignore storage failures
+    }
+  }
+
+  function applyMode(mode: ThemeMode) {
+    const resolved = mode === "auto" ? (media.matches ? "dark" : "light") : mode;
+    const root = document.documentElement;
+
+    root.dataset.theme = resolved;
+    root.dataset.themeMode = mode;
+    root.style.colorScheme = resolved;
+
+    const themeColor = document.getElementById("theme-color-meta");
+    if (themeColor) {
+      themeColor.setAttribute("content", resolved === "dark" ? "#0f172a" : "#ffffff");
+    }
+
+    document.querySelectorAll<HTMLElement>("[data-theme-toggle]").forEach((button) => {
+      button.setAttribute("aria-label", `Tema ${LABELS[mode]}. Cambiar a ${NEXT[mode]}`);
+      button.setAttribute("title", `Tema: ${LABELS[mode]}`);
+    });
+  }
+
+  function cycleMode() {
+    const current =
+      (document.documentElement.dataset.themeMode as ThemeMode | undefined) ?? readMode();
+    const next = MODES[(MODES.indexOf(current) + 1) % MODES.length];
+    saveMode(next);
+    applyMode(next);
+  }
+
+  applyMode(readMode());
+
+  document.addEventListener("click", (event) => {
+    const target = event.target as Element | null;
+    if (target?.closest("[data-theme-toggle]")) {
+      cycleMode();
+    }
+  });
+
+  media.addEventListener("change", () => {
+    if ((document.documentElement.dataset.themeMode ?? "auto") === "auto") {
+      applyMode("auto");
+    }
+  });
+</script>
+
+<style>
+  [data-theme-icon] {
+    display: none;
+  }
+
+  :global(html[data-theme-mode="auto"]) [data-theme-icon="auto"],
+  :global(html[data-theme-mode="light"]) [data-theme-icon="light"],
+  :global(html[data-theme-mode="dark"]) [data-theme-icon="dark"],
+  :global(html:not([data-theme-mode])) [data-theme-icon="auto"] {
+    display: inline-flex;
+  }
+</style>

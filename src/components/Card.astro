@@ -1,6 +1,8 @@
 ---
 import { Image } from "astro:assets";
+import Icon from "./Icon.astro";
 import { withBase } from "../lib/url";
+import { placeholderStyle } from "../lib/images";
 
 interface Props {
   image: ImageMetadata;
@@ -10,28 +12,31 @@ interface Props {
 }
 
 const { image, title, summary, link } = Astro.props;
+const imagePlaceholder = await placeholderStyle(image);
 ---
 
-<a href={withBase(link)} class="group block card overflow-hidden">
-  <div class="aspect-[4/3] overflow-hidden">
+<a href={withBase(link)} class="group card card-interactive block overflow-hidden">
+  <div class="aspect-[16/10] overflow-hidden">
     <Image
       src={image}
       alt={title}
       class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+      style={imagePlaceholder}
+      widths={[320, 480, 640, 800]}
+      sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw"
+      quality={70}
     />
   </div>
   <div class="p-6">
-    <h3 class="text-2xl mb-3 group-hover:text-theme-primary transition-colors">
-      {title}
-    </h3>
-    <p class="text-theme-text-secondary text-base leading-relaxed">
-      {summary}
-    </p>
+    <h3 class="text-xl font-bold mb-3 group-hover:text-theme-primary transition-colors">{title}</h3>
+    <p class="text-theme-text-secondary text-base leading-relaxed">{summary}</p>
     <span class="inline-flex items-center mt-4 text-base font-medium text-theme-primary group-hover:gap-2 transition-all">
       Más info
-      <svg class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-      </svg>
+      <Icon
+        name="arrow-right"
+        size="sm"
+        class="ml-1 transition-transform group-hover:translate-x-1"
+      />
     </span>
   </div>
 </a>

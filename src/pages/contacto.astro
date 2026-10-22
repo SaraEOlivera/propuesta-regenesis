@@ -1,0 +1,334 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import CallToActionSection from "../components/CallToActionSection.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import Heading from "../components/Heading.astro";
+import Button from "../components/Button.astro";
+import Icon from "../components/Icon.astro";
+import { acciones } from "../lib/acciones";
+import { contacto, redSocial, whatsappUrl } from "../lib/contacto";
+import { rutas } from "../lib/rutas";
+import { withBase } from "../lib/url";
+import heroImage from "../assets/actividades/charla-escucha.jpg";
+
+const instagram = redSocial("instagram");
+const facebook = redSocial("facebook");
+const whatsappBaseUrl = whatsappUrl();
+---
+
+<Layout
+  title="Contacto | Regénesis"
+  description="Comunicate con Regénesis, centro de ayuda para personas con consumos problemáticos y sus familias. Escribinos o llamanos: te escuchamos y orientamos sin juicios."
+>
+  <PageHero
+    title="Contacto"
+    description="En Regénesis creemos que pedir ayuda es un paso importante. Ofrecemos un espacio de escucha, acompañamiento y contención para personas que atraviesan situaciones de consumo problemático y para sus familias. Escribinos, llamanos o acercate a la sede: estamos para acompañarte con respeto, empatía y sin juicios."
+    image={heroImage}
+    imageAlt="Personas conversando en un espacio de escucha de Regénesis"
+  />
+
+  <section class="section bg-theme-surface" id="contacto">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Datos de contacto"
+        title="Estamos para escucharte"
+        description="Podés comunicarte por el medio que te resulte más cómodo. Si hay una emergencia o riesgo para la vida, llamá al 911."
+        class="mb-10"
+      />
+
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
+        <div class="order-2 lg:order-1">
+          <ul class="space-y-6">
+            <li class="flex gap-4">
+              <span
+                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-theme-primary-lighter/20 text-theme-primary"
+                aria-hidden="true"
+              >
+                <Icon name="location" size="lg" />
+              </span>
+              <div>
+                <Heading level="h3" size="section">
+                  Dirección
+                </Heading>
+                <p class="mt-1 text-theme-text-secondary">
+                  {contacto.direccionLinea1}
+                  <br />
+                  {contacto.direccionLinea2}
+                </p>
+                <a
+                  href={contacto.mapaUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="link-primary mt-2 inline-flex items-center gap-1.5 text-base"
+                >
+                  <Icon name="arrow-right" size="sm" />
+                  Cómo llegar
+                  <span class="sr-only"> (se abre en una nueva pestaña)</span>
+                </a>
+              </div>
+            </li>
+
+            <li class="flex gap-4">
+              <span
+                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-theme-primary-lighter/20 text-theme-primary"
+                aria-hidden="true"
+              >
+                <Icon name="phone" size="lg" />
+              </span>
+              <div>
+                <Heading level="h3" size="section">
+                  Teléfono y WhatsApp
+                </Heading>
+                <p class="mt-1 text-theme-text-secondary">
+                  <a href={contacto.telefonoUrl} class="link-primary">
+                    {contacto.telefono}
+                  </a>
+                  <span class="mx-2 text-theme-text-muted" aria-hidden="true">
+                    ·
+                  </span>
+                  <a
+                    href={whatsappUrl(
+                      "Hola, quiero hacer una consulta sobre el acompañamiento de Regénesis.",
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="link-primary"
+                  >
+                    Escribinos por WhatsApp
+                    <span class="sr-only"> (se abre en una nueva pestaña)</span>
+                  </a>
+                </p>
+              </div>
+            </li>
+
+            <li class="flex gap-4">
+              <span
+                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-theme-primary-lighter/20 text-theme-primary"
+                aria-hidden="true"
+              >
+                <Icon name="email" size="lg" />
+              </span>
+              <div>
+                <Heading level="h3" size="section">
+                  Redes sociales y correo electrónico
+                </Heading>
+                <div class="mt-1 flex flex-wrap gap-x-4 gap-y-2">
+                  {facebook && (
+                    <a
+                      href={facebook.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="link-primary inline-flex items-center gap-2"
+                    >
+                      <Icon name="facebook" size="sm" />
+                      Facebook
+                      <span class="sr-only"> (se abre en una nueva pestaña)</span>
+                    </a>
+                  )}
+                  {instagram && (
+                    <a
+                      href={instagram.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="link-primary inline-flex items-center gap-2"
+                    >
+                      <Icon name="instagram" size="sm" />
+                      Instagram
+                      <span class="sr-only"> (se abre en una nueva pestaña)</span>
+                    </a>
+                  )}
+                </div>
+                <p class="mt-2 text-theme-text-secondary">
+                  Correo electrónico:{" "}
+                  <a href={contacto.emailUrl} class="link-primary break-all">
+                    {contacto.email}
+                  </a>
+                </p>
+              </div>
+            </li>
+
+            <li class="flex gap-4">
+              <span
+                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-theme-primary-lighter/20 text-theme-primary"
+                aria-hidden="true"
+              >
+                <Icon name="clock" size="lg" />
+              </span>
+              <div>
+                <Heading level="h3" size="section">
+                  Horario de atención
+                </Heading>
+                <p class="mt-1 text-theme-text-secondary">
+                  Escribinos cuando quieras y te respondemos en cuanto podamos.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card order-1 p-6 md:p-8 lg:order-2" id="form">
+          <Heading level="h2" size="section" class="mb-2">
+            Mandanos un mensaje
+          </Heading>
+          <p class="mb-6 text-theme-text-secondary">
+            Completá el formulario y te respondemos por WhatsApp lo antes posible.
+          </p>
+
+          <form id="contactForm" data-whatsapp-url={whatsappBaseUrl}>
+            <div class="space-y-4">
+              <div>
+                <label for="name" class="pb-2">
+                  Nombre
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  autocomplete="given-name"
+                  placeholder="Tu nombre"
+                  name="name"
+                  required
+                />
+              </div>
+
+              <div>
+                <label for="email" class="pb-2">
+                  Correo electrónico
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  autocomplete="email"
+                  placeholder="Tu correo electrónico"
+                  name="email"
+                  required
+                />
+              </div>
+
+              <div>
+                <label for="message" class="pb-2">
+                  Mensaje
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  cols="30"
+                  rows="5"
+                  placeholder="Escribí tu mensaje..."
+                  required
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="mt-6">
+              <Button type="submit" class="w-full justify-center">
+                Enviar mensaje por WhatsApp
+              </Button>
+            </div>
+
+            <p
+              id="contactFormStatus"
+              class="mt-3 text-sm font-medium text-theme-primary"
+              role="status"
+              aria-live="polite"
+            ></p>
+
+            <a
+              id="contactFormFallback"
+              href={whatsappBaseUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-3 hidden text-sm font-semibold text-theme-primary underline"
+            >
+              Si no se abrió WhatsApp, tocá acá
+            </a>
+          </form>
+
+          <p class="mt-4 text-xs leading-relaxed text-theme-text-muted">
+            Usamos tus datos solo para responderte. No se almacenan en este sitio.{" "}
+            <a
+              href={withBase(rutas.privacidad)}
+              class="font-semibold text-theme-primary hover:underline"
+            >
+              Política de privacidad
+            </a>
+            {"."}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CallToActionSection
+    heading="¿Querés conocer más sobre Regénesis?"
+    subheading="Recorré nuestra historia, nuestras actividades o la información de orientación para familias."
+    primaryAction={acciones.quienesSomos}
+    secondaryAction={acciones.actividades}
+  />
+</Layout>
+
+<script>
+  function setupContactForm() {
+    const form = document.getElementById("contactForm") as HTMLFormElement | null;
+    const status = document.getElementById("contactFormStatus");
+    const nameInput = document.getElementById("name") as HTMLInputElement | null;
+    const emailInput = document.getElementById("email") as HTMLInputElement | null;
+    const messageInput = document.getElementById("message") as HTMLTextAreaElement | null;
+    const fallback = document.getElementById("contactFormFallback") as HTMLAnchorElement | null;
+
+    if (
+      !form ||
+      !status ||
+      !nameInput ||
+      !emailInput ||
+      !messageInput ||
+      form.dataset.bound === "true"
+    ) {
+      return;
+    }
+
+    form.dataset.bound = "true";
+
+    const whatsappBaseUrl = form.dataset.whatsappUrl;
+
+    if (!whatsappBaseUrl) return;
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (!form.reportValidity()) return;
+
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const message = messageInput.value.trim();
+
+      const whatsappMessage = `Hola, soy ${name}.
+
+Mi correo electrónico es: ${email}
+
+Quería consultarles lo siguiente:
+
+${message}`;
+
+      const whatsappLink = `${whatsappBaseUrl}?text=${encodeURIComponent(whatsappMessage)}`;
+
+      if (fallback) {
+        fallback.href = whatsappLink;
+        fallback.classList.remove("hidden");
+      }
+
+      // "noopener,noreferrer" evita que la pestaña de WhatsApp acceda a window.opener.
+      // No usamos el valor de retorno: con noopener algunos navegadores devuelven
+      // null incluso cuando la pestaña se abrió correctamente.
+      try {
+        window.open(whatsappLink, "_blank", "noopener,noreferrer");
+        status.textContent = "Abriendo WhatsApp...";
+      } catch {
+        status.textContent =
+          "No pudimos abrir WhatsApp. Revisá si el navegador bloqueó la ventana emergente.";
+      }
+    });
+  }
+
+  setupContactForm();
+</script>

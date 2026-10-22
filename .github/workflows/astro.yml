@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [master]
+  # Rebuild diario para que las actividades pasen solas de "próximas" a
+  # "realizadas" cuando cambia la fecha, aunque no haya commits nuevos.
+  schedule:
+    - cron: "0 6 * * *"
   workflow_dispatch:
 
 permissions:

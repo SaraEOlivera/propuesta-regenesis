@@ -1,0 +1,45 @@
+{
+  "brand": {
+    "name": "Regénesis"
+  },
+  "contact": {
+    "addressLine1": "Zona Noroeste, Barrio Belgrano",
+    "addressLine2": "Rosario, Argentina",
+    "phone": "+54 9 341 2005190",
+    "email": "asociacioncivilregenesis@gmail.com"
+  },
+  "social": [
+    {
+      "label": "Instagram",
+      "href": "https://www.instagram.com/regenesiscentrointegral/",
+      "icon": "instagram"
+    },
+    {
+      "label": "Facebook",
+      "href": "https://www.facebook.com/asociacionCivilRegenesis",
+      "icon": "facebook"
+    }
+  ],
+  "links": [
+    {
+      "label": "Inicio",
+      "href": "/",
+      "icon": "home"
+    },
+    {
+      "label": "Quiénes somos",
+      "href": "/quienes-somos",
+      "icon": "info"
+    },
+    {
+      "label": "Información",
+      "href": "/informacion",
+      "icon": "clipboard"
+    },
+    {
+      "label": "Actividades",
+      "href": "/actividades",
+      "icon": "calendar"
+    }
+  ]
+}

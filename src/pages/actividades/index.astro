@@ -1,0 +1,424 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import PageHero from "../../components/PageHero.astro";
+import ActivityCard from "../../components/ActivityCard.astro";
+import PhotoGallery from "../../components/PhotoGallery.astro";
+import CallToActionSection from "../../components/CallToActionSection.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import SocialCta from "../../components/SocialCta.astro";
+import Icon from "../../components/Icon.astro";
+import { acciones } from "../../lib/acciones";
+import heroImage from "../../assets/actividades/deporte-comunidad.jpg";
+import {
+  ACTIVITY_TYPES,
+  ACTIVITY_TYPE_META,
+  getActivityPhotos,
+  isUpcoming,
+  sortPast,
+  sortUpcoming,
+  todayInArgentina,
+} from "../../lib/actividades";
+
+const activities = await getCollection("actividades", ({ data }) => data.published !== false);
+
+const today = todayInArgentina();
+const upcoming = activities
+  .filter((activity) => isUpcoming(activity.data.date, today))
+  .sort(sortUpcoming);
+const past = activities.filter((activity) => !isUpcoming(activity.data.date, today)).sort(sortPast);
+
+const filters = [
+  { type: "all", label: "Todas", count: activities.length },
+  ...ACTIVITY_TYPES.map((type) => ({
+    type,
+    label: ACTIVITY_TYPE_META[type].plural,
+    count: activities.filter((activity) => activity.data.type === type).length,
+  })),
+];
+
+const PAGE_SIZE = 6;
+const GALLERY_PHOTOS_LIMIT = 9;
+
+const seenPhotos = new Set<string>();
+const galleryPhotos = past
+  .flatMap((activity) => getActivityPhotos(activity))
+  .filter((photo) => {
+    if (seenPhotos.has(photo.src.src)) return false;
+    seenPhotos.add(photo.src.src);
+    return true;
+  })
+  .slice(0, GALLERY_PHOTOS_LIMIT);
+---
+
+<Layout
+  title="Actividades | Regénesis"
+  description="Talleres, charlas y eventos de Regénesis. Conocé las próximas actividades y reviví los encuentros que ya realizamos."
+>
+  <PageHero
+    title="Actividades"
+    description="Espacios para aprender, compartir y encontrarnos. Conocé las próximas propuestas de Regénesis y reviví las actividades que ya forman parte de nuestra historia."
+    image={heroImage}
+    imageAlt="Personas jugando al deporte en comunidad"
+  />
+
+  <section class="section-sm bg-theme-surface">
+    <div class="container">
+      <SectionHeading
+        align="center"
+        eyebrow="Nuestras propuestas"
+        title="Espacios para encontrarnos"
+        description="Organizamos talleres, charlas y eventos abiertos a la comunidad. Algunas propuestas son parte del acompañamiento cotidiano y otras son encuentros especiales para compartir, aprender y construir vínculos."
+      />
+
+      <div
+        class="mt-8 flex flex-wrap justify-center gap-2"
+        role="group"
+        aria-label="Filtrar actividades por tipo"
+        data-activity-filters
+      >
+        {filters.map((filter) => (
+          <button
+            type="button"
+            class="inline-flex items-center gap-2 rounded-full border border-theme-border bg-theme-surface px-4 py-2 text-sm font-semibold text-theme-text-secondary transition-colors hover:border-theme-primary hover:text-theme-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-primary aria-pressed:border-theme-primary aria-pressed:bg-theme-primary-solid aria-pressed:text-white"
+            data-activity-filter={filter.type}
+            aria-pressed={filter.type === "all" ? "true" : "false"}
+          >
+            {filter.label}
+            <span class="rounded-full bg-theme-surface-hover px-2 py-0.5 text-xs font-bold text-theme-text-muted aria-pressed:bg-white/20 aria-pressed:text-white">
+              {filter.count}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      <nav
+        aria-label="Secciones de esta página"
+        class="mx-auto mt-8 max-w-4xl"
+        data-activity-section-nav
+      >
+        <ul class="flex flex-wrap justify-center gap-3">
+          <li data-activity-nav-target="proximas">
+            <a
+              href="#proximas"
+              class="inline-flex items-center gap-2 rounded-full border border-theme-border bg-theme-surface px-4 py-2 text-sm text-theme-text-secondary transition-colors hover:border-theme-primary hover:text-theme-primary"
+            >
+              <Icon name="calendar" size="sm" />
+              Próximas
+            </a>
+          </li>
+          <li data-activity-nav-target="realizadas">
+            <a
+              href="#realizadas"
+              class="inline-flex items-center gap-2 rounded-full border border-theme-border bg-theme-surface px-4 py-2 text-sm text-theme-text-secondary transition-colors hover:border-theme-primary hover:text-theme-primary"
+            >
+              <Icon name="check" size="sm" />
+              Realizadas
+            </a>
+          </li>
+          {galleryPhotos.length > 0 && (
+            <li data-activity-nav-target="fotos">
+              <a
+                href="#fotos"
+                class="inline-flex items-center gap-2 rounded-full border border-theme-border bg-theme-surface px-4 py-2 text-sm text-theme-text-secondary transition-colors hover:border-theme-primary hover:text-theme-primary"
+              >
+                <Icon name="image" size="sm" />
+                Fotos
+              </a>
+            </li>
+          )}
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+  <section
+    id="proximas"
+    class="section scroll-mt-24 bg-gradient-to-b from-theme-surface-muted to-theme-surface"
+    data-activity-section="proximas"
+  >
+    <div class="container">
+      <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+        <SectionHeading eyebrow="Agenda" title="Próximas actividades" />
+        {upcoming.length > 0 && (
+          <p class="text-sm font-medium text-theme-text-muted">
+            {upcoming.length} {upcoming.length === 1 ? "actividad" : "actividades"} en agenda
+          </p>
+        )}
+      </div>
+
+      {upcoming.length > 0 ? (
+        <>
+          <div
+            id="proximas-grid"
+            class="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
+            data-activity-grid
+            data-activity-limit={PAGE_SIZE}
+          >
+            {upcoming.map((activity) => (
+              <ActivityCard activity={activity} />
+            ))}
+          </div>
+
+          {upcoming.length > PAGE_SIZE && (
+            <div class="mt-10 flex justify-center" data-activity-more-wrapper hidden>
+              <button
+                type="button"
+                class="button button-outline"
+                data-activity-more
+                aria-controls="proximas-grid"
+                aria-expanded="false"
+              >
+                <span data-activity-more-label>Ver más actividades</span>
+                <Icon name="chevron-down" size="sm" class="ml-2" />
+              </button>
+            </div>
+          )}
+        </>
+      ) : (
+        <div class="card mx-auto max-w-2xl p-8 text-center" data-activity-empty>
+          <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-theme-primary-lighter/20">
+            <Icon name="calendar" size="lg" class="text-theme-primary" />
+          </div>
+          <h3 class="text-xl font-bold text-theme-text-primary">
+            Por ahora no hay actividades programadas
+          </h3>
+          <p class="mt-3 text-theme-text-secondary">
+            Estamos preparando nuevas propuestas. Seguinos en redes o escribinos para consultar por
+            los próximos encuentros.
+          </p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section
+    id="realizadas"
+    class="section scroll-mt-24 bg-theme-surface"
+    data-activity-section="realizadas"
+  >
+    <div class="container">
+      <SectionHeading
+        eyebrow="Nuestro recorrido"
+        title="Actividades realizadas"
+        description="Encuentros que ya sucedieron y que forman parte del camino que construimos en comunidad."
+        class="mb-10"
+      />
+
+      {past.length > 0 ? (
+        <>
+          <div
+            id="realizadas-grid"
+            class="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
+            data-activity-grid
+            data-activity-limit={PAGE_SIZE}
+          >
+            {past.map((activity) => (
+              <ActivityCard activity={activity} />
+            ))}
+          </div>
+
+          {past.length > PAGE_SIZE && (
+            <div class="mt-10 flex justify-center" data-activity-more-wrapper hidden>
+              <button
+                type="button"
+                class="button button-outline"
+                data-activity-more
+                aria-controls="realizadas-grid"
+                aria-expanded="false"
+              >
+                <span data-activity-more-label>Ver más actividades</span>
+                <Icon name="chevron-down" size="sm" class="ml-2" />
+              </button>
+            </div>
+          )}
+        </>
+      ) : (
+        <p class="text-theme-text-secondary">Todavía no hay actividades realizadas publicadas.</p>
+      )}
+    </div>
+  </section>
+
+  {galleryPhotos.length > 0 && (
+    <section
+      id="fotos"
+      class="section scroll-mt-24 bg-gradient-to-b from-theme-surface to-theme-surface-muted"
+      data-activity-section="fotos"
+    >
+      <div class="container">
+        <SectionHeading
+          align="center"
+          eyebrow="Galería"
+          title="Fotos de nuestras actividades recientes"
+          description="Una selección de los últimos encuentros: talleres, charlas, salidas y momentos compartidos en comunidad."
+        />
+
+        <PhotoGallery photos={galleryPhotos} columns={3} class="mt-10" />
+
+        <p class="mt-8 text-center text-sm text-theme-text-muted">
+          Esta galería muestra hasta {GALLERY_PHOTOS_LIMIT} fotos de las actividades más recientes.
+          Cada actividad guarda su galería completa en{" "}
+          <a href="#realizadas" class="font-semibold text-theme-primary hover:underline">
+            Actividades realizadas
+          </a>
+          .
+        </p>
+      </div>
+    </section>
+  )}
+
+  <p
+    data-activity-no-results
+    hidden
+    class="container pb-12 text-center text-lg text-theme-text-secondary"
+  >
+    No hay actividades de este tipo por ahora. Probá con otro filtro o escribinos para consultar.
+  </p>
+
+  <SocialCta />
+
+  <CallToActionSection
+    heading="¿Querés sumarte a una actividad?"
+    subheading="Escribinos para consultar por cupos, horarios o próximas propuestas. También podés acercarte a la sede y conversar con nuestro equipo."
+    secondaryAction={acciones.quienesSomos}
+  />
+</Layout>
+
+<script>
+  const DEFAULT_PAGE_SIZE = 6;
+
+  interface PaginatedGrid {
+    grid: HTMLElement;
+    section: HTMLElement | null;
+    cards: HTMLElement[];
+    moreWrapper: HTMLElement | null;
+    moreButton: HTMLButtonElement | null;
+    moreLabel: HTMLElement | null;
+    pageSize: number;
+    visibleLimit: number;
+  }
+
+  function setupActivityFilters() {
+    const filterBar = document.querySelector<HTMLElement>("[data-activity-filters]");
+    if (!filterBar || filterBar.dataset.ready === "true") return;
+    filterBar.dataset.ready = "true";
+
+    const filters = filterBar.querySelectorAll<HTMLButtonElement>("[data-activity-filter]");
+    const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-activity-section]"));
+    const sectionNav = document.querySelector<HTMLElement>("[data-activity-section-nav]");
+    const sectionNavItems = sectionNav
+      ? Array.from(sectionNav.querySelectorAll<HTMLElement>("[data-activity-nav-target]"))
+      : [];
+    const noResults = document.querySelector<HTMLElement>("[data-activity-no-results]");
+
+    const paginated = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-activity-grid]"),
+    ).map((grid): PaginatedGrid => {
+      const section = grid.closest<HTMLElement>("[data-activity-section]");
+      const pageSize = Number.parseInt(grid.dataset.activityLimit ?? "", 10) || DEFAULT_PAGE_SIZE;
+
+      return {
+        grid,
+        section,
+        cards: Array.from(grid.querySelectorAll<HTMLElement>("[data-activity-card]")),
+        moreWrapper: section?.querySelector<HTMLElement>("[data-activity-more-wrapper]") ?? null,
+        moreButton: section?.querySelector<HTMLButtonElement>("[data-activity-more]") ?? null,
+        moreLabel: section?.querySelector<HTMLElement>("[data-activity-more-label]") ?? null,
+        pageSize,
+        visibleLimit: pageSize,
+      };
+    });
+
+    let activeFilter = "all";
+
+    function getMatchingCards(state: PaginatedGrid) {
+      return state.cards.filter(
+        (card) => activeFilter === "all" || card.dataset.activityType === activeFilter,
+      );
+    }
+
+    function render(reset: boolean) {
+      let visibleTotal = 0;
+
+      paginated.forEach((state) => {
+        if (reset) state.visibleLimit = state.pageSize;
+
+        let matchingCount = 0;
+
+        state.cards.forEach((card) => {
+          const matches = activeFilter === "all" || card.dataset.activityType === activeFilter;
+          const index = matches ? matchingCount++ : -1;
+
+          card.hidden = !matches || index >= state.visibleLimit;
+        });
+
+        visibleTotal += Math.min(matchingCount, state.visibleLimit);
+
+        const remaining = Math.max(matchingCount - state.visibleLimit, 0);
+        const expanded = state.visibleLimit > state.pageSize;
+
+        if (state.moreWrapper) state.moreWrapper.hidden = remaining === 0;
+
+        if (state.moreButton) {
+          state.moreButton.hidden = remaining === 0;
+          state.moreButton.setAttribute("aria-expanded", String(expanded));
+        }
+
+        if (state.moreLabel) {
+          state.moreLabel.textContent =
+            remaining > 0 ? `Ver más actividades (${remaining})` : "Ver más actividades";
+        }
+      });
+
+      sections.forEach((section) => {
+        const hasVisibleCards = Boolean(
+          section.querySelector("[data-activity-card]:not([hidden])"),
+        );
+
+        section.hidden = activeFilter !== "all" && !hasVisibleCards;
+      });
+
+      sectionNavItems.forEach((item) => {
+        const target = document.getElementById(item.dataset.activityNavTarget ?? "");
+
+        item.hidden = !target || target.hidden;
+      });
+
+      if (sectionNav) {
+        sectionNav.hidden = sectionNavItems.every((item) => item.hidden);
+      }
+
+      if (noResults) noResults.hidden = visibleTotal > 0;
+    }
+
+    paginated.forEach((state) => {
+      state.moreButton?.addEventListener("click", () => {
+        const previousLimit = state.visibleLimit;
+        state.visibleLimit += state.pageSize;
+        render(false);
+
+        // Si ya no quedan más tandas, el botón desaparece: movemos el foco
+        // a la primera tarjeta recién revelada para no perder la posición.
+        if (state.moreButton?.hidden) {
+          getMatchingCards(state)[previousLimit]?.querySelector<HTMLElement>("a")?.focus();
+        }
+      });
+    });
+
+    filters.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeFilter = button.dataset.activityFilter ?? "all";
+
+        filters.forEach((filterButton) => {
+          filterButton.setAttribute("aria-pressed", String(filterButton === button));
+        });
+
+        render(true);
+      });
+    });
+
+    render(true);
+  }
+
+  setupActivityFilters();
+</script>

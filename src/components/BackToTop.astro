@@ -1,0 +1,59 @@
+---
+import Icon from "./Icon.astro";
+---
+
+<button
+  type="button"
+  data-back-to-top
+  aria-label="Volver arriba"
+  title="Volver arriba"
+  aria-hidden="true"
+  tabindex="-1"
+  inert
+  class="pointer-events-none fixed bottom-6 right-6 z-40 inline-flex h-11 w-11 translate-y-2 items-center justify-center rounded-full border border-theme-border bg-theme-surface text-theme-text-secondary opacity-0 shadow-lg transition-all duration-300 hover:border-theme-primary hover:text-theme-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-primary print:hidden"
+>
+  <Icon name="arrow-up" size="md" />
+</button>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>("[data-back-to-top]");
+  const THRESHOLD = 600;
+
+  if (button) {
+    let visible = false;
+
+    const setVisible = (next: boolean) => {
+      if (next === visible) return;
+      visible = next;
+
+      button.classList.toggle("opacity-0", !next);
+      button.classList.toggle("translate-y-2", !next);
+      button.classList.toggle("pointer-events-none", !next);
+      button.setAttribute("aria-hidden", String(!next));
+      button.tabIndex = next ? 0 : -1;
+
+      if (next) {
+        button.removeAttribute("inert");
+      } else {
+        button.setAttribute("inert", "");
+      }
+    };
+
+    const update = () => setVisible(window.scrollY > THRESHOLD);
+
+    update();
+
+    // `pageshow` cubre la restauración del scroll al volver con el historial.
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
+    window.addEventListener("pageshow", update);
+
+    button.addEventListener("click", () => {
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+
+      // Mantiene el teclado al inicio de la página sin cancelar el scroll suave.
+      document.getElementById("contenido")?.focus({ preventScroll: true });
+    });
+  }
+</script>

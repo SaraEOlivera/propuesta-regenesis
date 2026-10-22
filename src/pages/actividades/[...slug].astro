@@ -1,0 +1,293 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import Layout from "../../layouts/Layout.astro";
+import ActivityTypeBadge from "../../components/ActivityTypeBadge.astro";
+import PhotoGallery from "../../components/PhotoGallery.astro";
+import CallToActionSection from "../../components/CallToActionSection.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import Heading from "../../components/Heading.astro";
+import Button from "../../components/Button.astro";
+import Icon from "../../components/Icon.astro";
+import { acciones } from "../../lib/acciones";
+import { whatsappUrl } from "../../lib/contacto";
+import { rutas } from "../../lib/rutas";
+import { withBase } from "../../lib/url";
+import { placeholderStyle } from "../../lib/images";
+import {
+  MODALITY_LABELS,
+  formatActivityDate,
+  formatActivityTime,
+  getActivityPhotos,
+  getActivitySlug,
+  googleCalendarUrl,
+  isUpcoming,
+} from "../../lib/actividades";
+
+export async function getStaticPaths() {
+  const activities = await getCollection("actividades", ({ data }) => data.published !== false);
+
+  return activities.map((activity) => ({
+    params: { slug: getActivitySlug(activity) },
+    props: { activity },
+  }));
+}
+
+interface Props {
+  activity: CollectionEntry<"actividades">;
+}
+
+const { activity } = Astro.props;
+const { data } = activity;
+const { Content } = await render(activity);
+
+const cover = data.cover;
+const coverPlaceholder = cover ? await placeholderStyle(cover) : "";
+const photos = getActivityPhotos(activity);
+const galleryPhotos = data.cover ? photos.filter((photo) => photo.src.src !== cover?.src) : photos;
+const dateLabel = formatActivityDate(data.date);
+const timeLabel = formatActivityTime(data.time, data.endTime);
+const modalityLabel = MODALITY_LABELS[data.modality];
+const isUpcomingActivity = isUpcoming(data.date);
+
+const consultaWhatsapp = whatsappUrl(
+  `Hola, quiero consultar por la actividad "${data.title}" del ${dateLabel}.`,
+);
+
+const siteURL = Astro.site ?? new URL(Astro.url.origin);
+const activityUrl = new URL(withBase(`${rutas.actividades}/${getActivitySlug(activity)}`), siteURL)
+  .href;
+const homeUrl = new URL(withBase(rutas.inicio), siteURL).href;
+const activitiesUrl = new URL(withBase(rutas.actividades), siteURL).href;
+const coverUrl = cover ? new URL(cover.src, siteURL).href : undefined;
+const coverType = cover
+  ? cover.format === "jpg"
+    ? "image/jpeg"
+    : `image/${cover.format}`
+  : undefined;
+
+const startDate = data.time ? `${data.date}T${data.time}:00-03:00` : data.date;
+const endDate = data.endTime ? `${data.date}T${data.endTime}:00-03:00` : undefined;
+
+const eventStructuredData: Record<string, unknown> = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  name: data.title,
+  description: data.summary,
+  startDate,
+  ...(endDate ? { endDate } : {}),
+  eventStatus: "https://schema.org/EventScheduled",
+  eventAttendanceMode:
+    data.modality === "virtual"
+      ? "https://schema.org/OnlineEventAttendanceMode"
+      : data.modality === "mixta"
+        ? "https://schema.org/MixedEventAttendanceMode"
+        : "https://schema.org/OfflineEventAttendanceMode",
+  location:
+    data.modality === "virtual"
+      ? { "@type": "VirtualLocation", url: activityUrl }
+      : {
+          "@type": "Place",
+          name: data.location ?? "Regénesis",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Rosario",
+            addressRegion: "Santa Fe",
+            addressCountry: "AR",
+          },
+        },
+  ...(coverUrl ? { image: coverUrl } : {}),
+  url: activityUrl,
+  organizer: {
+    "@type": "NGO",
+    name: "Regénesis",
+    url: homeUrl,
+  },
+};
+
+const breadcrumbStructuredData: Record<string, unknown> = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: homeUrl },
+    { "@type": "ListItem", position: 2, name: "Actividades", item: activitiesUrl },
+    { "@type": "ListItem", position: 3, name: data.title, item: activityUrl },
+  ],
+};
+---
+
+<Layout
+  title={`${data.title} | Actividades | Regénesis`}
+  description={data.summary}
+  image={coverUrl}
+  imageAlt={coverUrl ? (data.coverAlt ?? data.title) : undefined}
+  imageWidth={cover?.width}
+  imageHeight={cover?.height}
+  imageType={coverType}
+  ogType="article"
+  structuredData={[eventStructuredData, breadcrumbStructuredData]}
+>
+  <div class="border-b border-theme-border bg-theme-surface">
+    <div class="container py-4">
+      <a
+        href={withBase(rutas.actividades)}
+        class="inline-flex items-center gap-2 text-sm font-semibold text-theme-primary"
+      >
+        <Icon name="arrow-left" size="sm" />
+        Volver a Actividades
+      </a>
+    </div>
+  </div>
+
+  <section class="section bg-gradient-to-b from-theme-surface-muted to-theme-surface">
+    <div class="container">
+      <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <ActivityTypeBadge type={data.type} />
+            <span
+              class:list={[
+                "inline-flex items-center rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wide",
+                isUpcomingActivity
+                  ? "border-theme-primary/20 bg-theme-primary/10 text-theme-primary"
+                  : "border-theme-border bg-theme-surface-hover text-theme-text-muted",
+              ]}
+            >
+              {isUpcomingActivity ? "Próxima actividad" : "Actividad realizada"}
+            </span>
+          </div>
+
+          <Heading level="h1" size="page" class="mt-5">
+            {data.title}
+          </Heading>
+
+          <p class="mt-5 text-lg leading-relaxed text-theme-text-secondary">{data.summary}</p>
+
+          <dl class="mt-8 grid gap-3 sm:grid-cols-2">
+            <div class="rounded-2xl border border-theme-border bg-theme-surface p-4">
+              <dt class="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-theme-text-muted">
+                <Icon name="calendar" size="sm" class="text-theme-primary" />
+                Fecha
+              </dt>
+              <dd class="mt-2 font-semibold text-theme-text-primary">
+                {dateLabel}
+                {timeLabel && (
+                  <span class="block text-sm font-normal text-theme-text-muted">{timeLabel}</span>
+                )}
+              </dd>
+            </div>
+
+            <div class="rounded-2xl border border-theme-border bg-theme-surface p-4">
+              <dt class="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-theme-text-muted">
+                <Icon name="location" size="sm" class="text-theme-primary" />
+                Lugar
+              </dt>
+              <dd class="mt-2 font-semibold text-theme-text-primary">
+                {data.location ?? "A confirmar"}
+              </dd>
+            </div>
+
+            <div class="rounded-2xl border border-theme-border bg-theme-surface p-4">
+              <dt class="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-theme-text-muted">
+                <Icon name="tag" size="sm" class="text-theme-primary" />
+                Modalidad
+              </dt>
+              <dd class="mt-2 font-semibold text-theme-text-primary">{modalityLabel}</dd>
+            </div>
+
+            <div class="rounded-2xl border border-theme-border bg-theme-surface p-4">
+              <dt class="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-theme-text-muted">
+                <Icon name="users" size="sm" class="text-theme-primary" />
+                Organiza
+              </dt>
+              <dd class="mt-2 font-semibold text-theme-text-primary">Regénesis</dd>
+            </div>
+          </dl>
+
+          {isUpcomingActivity && (
+            <div class="mt-8 flex flex-wrap gap-3">
+              {data.registrationUrl && (
+                <Button href={data.registrationUrl} showIcon={true}>
+                  Inscribirme
+                </Button>
+              )}
+              <Button variant="outline" href={consultaWhatsapp}>
+                Consultar por WhatsApp
+              </Button>
+              <Button
+                variant="outline"
+                href={googleCalendarUrl(activity)}
+                icon="calendar"
+                iconPosition="left"
+              >
+                Agregar a mi calendario
+              </Button>
+            </div>
+          )}
+        </div>
+
+        {cover && (
+          <div class="overflow-hidden rounded-2xl shadow-xl">
+            <Image
+              src={cover}
+              alt={data.coverAlt ?? data.title}
+              widths={[480, 800, 1200, 1600]}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              loading="eager"
+              fetchpriority="high"
+              quality={70}
+              class="max-h-[540px] w-full object-cover"
+              style={coverPlaceholder}
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  {activity.body && activity.body.trim().length > 0 && (
+    <section class="section bg-theme-surface">
+      <div class="container">
+        <div class="prose prose-lg mx-auto max-w-3xl">
+          <Content />
+        </div>
+      </div>
+    </section>
+  )}
+
+  {galleryPhotos.length > 0 && (
+    <section class="section bg-gradient-to-b from-theme-surface to-theme-surface-muted">
+      <div class="container">
+        <SectionHeading eyebrow="Galería" title="Fotos de la actividad" class="mb-8" />
+
+        <PhotoGallery photos={galleryPhotos} columns={3} />
+      </div>
+    </section>
+  )}
+
+  <CallToActionSection
+    heading={
+      isUpcomingActivity
+        ? "¿Querés sumarte a esta actividad?"
+        : "Seguí conociendo nuestras actividades"
+    }
+    subheading={
+      isUpcomingActivity
+        ? "Escribinos para consultar por cupos, horarios o detalles de la propuesta."
+        : "Conocé las próximas propuestas y las actividades que ya realizamos en comunidad."
+    }
+    secondaryAction={acciones.todasActividades}
+  />
+
+  <div class="bg-theme-surface">
+    <div class="container py-8">
+      <a
+        href={withBase(rutas.actividades)}
+        class="inline-flex items-center gap-2 text-sm font-semibold text-theme-primary"
+      >
+        <Icon name="arrow-left" size="sm" />
+        Volver a Actividades
+      </a>
+    </div>
+  </div>
+</Layout>

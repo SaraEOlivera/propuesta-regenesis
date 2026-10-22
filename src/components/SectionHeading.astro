@@ -1,0 +1,68 @@
+---
+import type { HeadingLevel } from "../types/design-system";
+import Heading from "./Heading.astro";
+
+interface Props {
+  /** Antetítulo corto en mayúsculas. */
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  level?: HeadingLevel;
+  /** Id del elemento de título, para `aria-labelledby`. */
+  id?: string;
+  /** `inherit` mantiene la alineación del contenedor (útil con breakpoints). */
+  align?: "left" | "center" | "inherit";
+  /** `on-dark` invierte los colores para secciones de color. */
+  tone?: "default" | "on-dark";
+  size?: "default" | "section" | "page";
+  class?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  description,
+  level = "h2",
+  id,
+  align = "left",
+  tone = "default",
+  size = "default",
+  class: className = "",
+} = Astro.props;
+
+const isDark = tone === "on-dark";
+---
+
+<div class:list={["max-w-3xl", align === "center" && "mx-auto text-center", className]}>
+  {eyebrow && (
+    <p
+      class:list={[
+        "mb-3 text-sm font-semibold uppercase tracking-widest",
+        isDark ? "text-white/80" : "text-theme-primary",
+      ]}
+    >
+      {eyebrow}
+    </p>
+  )}
+
+  <Heading
+    level={level}
+    size={size}
+    align={align}
+    id={id}
+    class={isDark ? "text-white" : undefined}
+  >
+    {title}
+  </Heading>
+
+  {description && (
+    <p
+      class:list={[
+        "mt-4 text-lg leading-relaxed",
+        isDark ? "text-white/90" : "text-theme-text-secondary",
+      ]}
+    >
+      {description}
+    </p>
+  )}
+</div>

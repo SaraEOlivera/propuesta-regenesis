@@ -1,71 +1,90 @@
 ---
 import Icon from "./Icon.astro";
-import nav from "../data/navigation.json";
+import { nav } from "../lib/nav";
+import { acciones } from "../lib/acciones";
+import { contacto } from "../lib/contacto";
+import { rutas } from "../lib/rutas";
 import { withBase } from "../lib/url";
 ---
 
-<footer class="bg-theme-primary-darker text-white py-8">
-  <div
-    class="container content flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8"
-  >
-    <!-- First Column - Logo and Navigation -->
-    <div class="flex flex-col items-center lg:items-start w-full lg:w-1/4">
-      <div class="text-2xl lg:text-3xl font-bold text-white mb-4">
-        {nav.brand.name}
-      </div>
+<footer class="bg-theme-primary-darker py-8 text-white">
+  <div class="container content flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
+    <!-- Primera columna: logo y navegación -->
+    <div class="flex w-full flex-col items-center lg:w-1/4 lg:items-start">
+      <p class="brand mb-4 text-2xl text-white lg:text-3xl">{nav.brand.name}</p>
       <nav
-        class="flex flex-wrap justify-center lg:justify-start gap-x-4 gap-y-2"
+        aria-label="Navegación del pie de página"
+        class="flex flex-wrap justify-center gap-x-4 gap-y-2 lg:justify-start"
       >
-        {
-          nav.links.map((link) => (
-            <a href={withBase(link.href)} class="text-sm text-white hover:text-gray-300">
-              {link.label}
-            </a>
-          ))
-        }
-        <a href={withBase(nav.cta.href)} class="text-sm text-white hover:text-gray-300"
-          >{nav.cta.label}</a
+        {nav.links.map((link) => (
+          <a
+            href={withBase(link.href)}
+            class="text-sm text-white/80 transition-colors hover:text-white"
+          >
+            {link.label}
+          </a>
+        ))}
+        <a
+          href={withBase(acciones.donar.href)}
+          class="text-sm text-white/80 transition-colors hover:text-white"
         >
+          Donar
+        </a>
+        <a
+          href={withBase(acciones.contacto.href)}
+          class="text-sm text-white/80 transition-colors hover:text-white"
+        >
+          {acciones.contacto.label}
+        </a>
+        <a
+          href={withBase(rutas.privacidad)}
+          class="text-sm text-white/80 transition-colors hover:text-white"
+        >
+          Privacidad
+        </a>
       </nav>
     </div>
 
-    <!-- Middle Column - Contact Info -->
-    <div class="flex flex-col items-center lg:items-start w-full lg:w-1/3">
-      <div class="flex items-start w-full my-3">
-        <div class="w-8 text-center mt-1">
-          <Icon name="location" size="sm" class="text-gray-400 mx-auto" />
+    <!-- Segunda columna: información de contacto -->
+    <div class="flex w-full flex-col items-center lg:w-1/3 lg:items-start">
+      <div class="my-3 flex w-full items-start">
+        <div class="mt-1 w-8 text-center">
+          <Icon name="location" size="sm" class="mx-auto text-white/60" />
         </div>
         <p class="ml-3 text-sm text-white">
-          {nav.contact.addressLine1}<br />{nav.contact.addressLine2}
+          {nav.contact.addressLine1}
+          <br />
+          {nav.contact.addressLine2}
         </p>
       </div>
-      <div class="flex items-start w-full my-3">
-        <div class="w-8 text-center mt-1">
-          <Icon name="phone" size="sm" class="text-gray-400 mx-auto" />
+      <div class="my-3 flex w-full items-start">
+        <div class="mt-1 w-8 text-center">
+          <Icon name="phone" size="sm" class="mx-auto text-white/60" />
         </div>
-        <p class="ml-3 text-sm text-white">{nav.contact.phone}</p>
+        <p class="ml-3 text-sm text-white">
+          <a href={contacto.telefonoUrl} class="transition-colors hover:text-white/80">
+            {contacto.telefono}
+          </a>
+        </p>
       </div>
-      <div class="flex items-start w-full my-3">
-        <div class="w-8 text-center mt-1">
-          <Icon name="email" size="sm" class="text-gray-400 mx-auto" />
+      <div class="my-3 flex w-full items-start">
+        <div class="mt-1 w-8 text-center">
+          <Icon name="email" size="sm" class="mx-auto text-white/60" />
         </div>
-        <p class="ml-3 text-sm text-white">{nav.contact.email}</p>
+        <p class="ml-3 text-sm text-white">
+          <a href={contacto.emailUrl} class="break-all transition-colors hover:text-white/80">
+            {contacto.email}
+          </a>
+        </p>
       </div>
     </div>
 
-    <!-- Third Column - Description -->
-    <div class="flex flex-col items-center lg:items-start w-full lg:w-2/5">
-      <h3 class="text-lg font-semibold mb-3 text-center lg:text-left">
-        {nav.brand.name}
-      </h3>
-      <p
-        class="text-sm text-center lg:text-left leading-relaxed max-w-md text-white lg:max-w-none"
-      >
-      Acompañamos, escuchamos y ayudamos a poner en palabras lo que muchas veces
-       cuesta nombrar. A través de talleres terapéuticos, deporte, tareas de 
-       oficio, cocina compartida y el trabajo con las familias, construimos un
-        proceso real de recuperación, paso a paso.
-
+    <!-- Tercera columna: descripción -->
+    <div class="flex w-full flex-col items-center lg:w-2/5 lg:items-start">
+      <p class="max-w-md text-center text-sm leading-relaxed text-white lg:max-w-none lg:text-left">
+        Acompañamos, escuchamos y ayudamos a poner en palabras lo que muchas veces cuesta nombrar. A
+        través de talleres terapéuticos, el deporte, el taller de oficios, la cocina compartida y el
+        trabajo con las familias, construimos un proceso real de recuperación, paso a paso.
       </p>
     </div>
   </div>

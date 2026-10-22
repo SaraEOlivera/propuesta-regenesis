@@ -1,0 +1,231 @@
+---
+import Layout from "../layouts/Layout.astro";
+import about from "../assets/actividades/salida-cena.jpg";
+import PageHero from "../components/PageHero.astro";
+import CallToActionSection from "../components/CallToActionSection.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import Icon from "../components/Icon.astro";
+import type { IconName } from "../types/icons";
+import { acciones } from "../lib/acciones";
+
+interface Pillar {
+  title: string;
+  text: string;
+  icon: IconName;
+  tint: string;
+}
+
+const pillars: Pillar[] = [
+  {
+    title: "Acompañar",
+    text: "Ofrecer escucha, orientación y contención, respetando la historia y los tiempos de cada persona.",
+    icon: "heart",
+    tint: "bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-200",
+  },
+  {
+    title: "Promover el bienestar",
+    text: "Favorecer herramientas que contribuyan al bienestar personal y a la vida cotidiana.",
+    icon: "sparkles",
+    tint: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-200",
+  },
+  {
+    title: "Fortalecer vínculos",
+    text: "Reconocer el valor de las redes afectivas, familiares y comunitarias como apoyo.",
+    icon: "home",
+    tint: "bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-200",
+  },
+  {
+    title: "Construir oportunidades",
+    text: "Impulsar la autonomía y la posibilidad de proyectar nuevos caminos de vida.",
+    icon: "sprout",
+    tint: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200",
+  },
+];
+
+const approaches: Pillar[] = [
+  {
+    title: "Escucha y orientación",
+    text: "Generar espacios donde las personas puedan expresar sus inquietudes y conocer opciones de acompañamiento acordes a su situación.",
+    icon: "ear",
+    tint: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-200",
+  },
+  {
+    title: "Redes de apoyo",
+    text: "Reconocer la importancia de los vínculos y del entorno comunitario en los procesos personales.",
+    icon: "users",
+    tint: "bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-200",
+  },
+];
+---
+
+<Layout
+  title="Quiénes somos | Regénesis"
+  description="Conocé Regénesis, una asociación civil de Rosario comprometida con el acompañamiento de personas que atraviesan situaciones de consumo problemático."
+>
+  <PageHero
+    title="Quiénes somos"
+    description="Regénesis es una asociación civil de Rosario comprometida con el acompañamiento de personas que atraviesan situaciones de consumo problemático y adicciones. Creemos que cada persona tiene una historia única y merece ser escuchada, comprendida y acompañada sin prejuicios."
+    image={about}
+    imageAlt="Personas de la comunidad de Regénesis compartiendo una cena"
+  />
+
+  <!-- Presentación -->
+  <section class="section relative overflow-hidden bg-theme-surface">
+    <div
+      class="pointer-events-none absolute -left-24 top-8 h-72 w-72 rounded-full bg-theme-primary-lighter/40 blur-3xl dark:bg-theme-primary-lighter/10"
+      aria-hidden="true"
+    ></div>
+    <div
+      class="pointer-events-none absolute -right-20 bottom-0 h-64 w-64 rounded-full bg-amber-200/40 blur-3xl dark:bg-amber-400/10"
+      aria-hidden="true"
+    ></div>
+
+    <div class="container relative">
+      <div class="max-w-4xl mx-auto text-center">
+        <SectionHeading
+          align="center"
+          eyebrow="Regénesis"
+          title="Cada historia merece nuevas oportunidades"
+          description="Somos una asociación civil de Rosario, Santa Fe, comprometida con el abordaje de las adicciones y el acompañamiento de las personas que atraviesan situaciones de consumo problemático."
+        />
+        <p class="mt-4 text-lg text-theme-text-secondary leading-relaxed">
+          Buscamos promover un espacio de escucha, orientación y contención, donde cada persona
+          pueda sentirse acompañada y encontrar herramientas para transitar su propio proceso, con
+          respeto por su historia y sus tiempos.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Historia -->
+  <section class="section relative overflow-hidden bg-gradient-to-b from-theme-primary-lighter/20 via-theme-primary-lighter/10 to-theme-surface">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-center">
+        <div>
+          <SectionHeading
+            eyebrow="Nuestra historia"
+            title="Un camino que se construye en comunidad"
+            class="mb-6"
+          />
+          <p class="text-lg text-theme-text-secondary leading-relaxed mb-4">
+            Nuestro nombre representa la posibilidad de un nuevo comienzo: reconocer la propia
+            historia, recuperar la confianza y abrirse a otras oportunidades.
+          </p>
+          <p class="text-lg text-theme-text-secondary leading-relaxed">
+            La historia y el recorrido de la institución siguen creciendo a través del trabajo
+            cotidiano, el compromiso y el vínculo con la comunidad.
+          </p>
+        </div>
+
+        <!-- Tarjeta-cita con "hojas" inclinadas detrás -->
+        <div class="relative mx-4 lg:mx-8">
+          <div
+            class="absolute inset-0 rotate-[5deg] rounded-[2rem] bg-amber-200/70 dark:bg-amber-400/10"
+            aria-hidden="true"
+          ></div>
+          <div
+            class="absolute inset-0 -rotate-[3deg] rounded-[2rem] bg-theme-primary-lighter/60 dark:bg-theme-primary-solid/60"
+            aria-hidden="true"
+          ></div>
+          <figure class="relative rounded-[2rem] bg-theme-surface p-8 lg:p-12 shadow-lg">
+            <span
+              class="block text-8xl leading-none text-theme-primary/30 select-none"
+              aria-hidden="true"
+            >
+              “
+            </span>
+            <figcaption class="text-2xl font-semibold text-theme-text-primary mb-4 -mt-6">
+              ¿Qué nos inspira?
+            </figcaption>
+            <blockquote class="text-lg text-theme-text-secondary leading-relaxed">
+              La convicción de que nadie debería atravesar una situación difícil en soledad y de que
+              el acompañamiento, los vínculos y el acceso a orientación pueden abrir nuevas
+              posibilidades.
+            </blockquote>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Onda: entrada a la sección de color -->
+  <div class="bg-theme-surface text-theme-primary-solid" aria-hidden="true">
+    <svg
+      viewBox="0 0 1440 80"
+      preserveAspectRatio="none"
+      class="block h-12 w-full fill-current lg:h-20"
+    >
+      <path d="M0,40 C240,90 480,0 720,40 C960,80 1200,10 1440,40 L1440,80 L0,80 Z"></path>
+    </svg>
+  </div>
+
+  <!-- Misión y objetivos -->
+  <section id="mision" class="section scroll-mt-24 bg-theme-primary-solid text-white">
+    <div class="container">
+      <SectionHeading
+        tone="on-dark"
+        align="center"
+        eyebrow="Nuestro propósito"
+        title="Misión y objetivos"
+        description="Acompañar procesos personales desde una mirada respetuosa, promoviendo el bienestar, los vínculos y la construcción de nuevas oportunidades."
+        class="mb-14"
+      />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {pillars.map((p) => (
+          <article class="card p-7">
+            <div class={`mb-5 flex h-14 w-14 items-center justify-center rounded-full ${p.tint}`}>
+              <Icon name={p.icon} size="lg" />
+            </div>
+            <h3 class="text-xl font-bold text-theme-text-primary mb-3">{p.title}</h3>
+            <p class="text-theme-text-secondary leading-relaxed">{p.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Onda: salida de la sección de color -->
+  <div class="bg-theme-surface text-theme-primary-solid" aria-hidden="true">
+    <svg
+      viewBox="0 0 1440 80"
+      preserveAspectRatio="none"
+      class="block h-12 w-full fill-current lg:h-20"
+    >
+      <path d="M0,0 L1440,0 L1440,40 C1200,80 960,0 720,40 C480,80 240,10 0,40 Z"></path>
+    </svg>
+  </div>
+
+  <!-- Acompañamiento -->
+  <section class="section relative overflow-hidden bg-gradient-to-b from-theme-primary-lighter/20 via-theme-primary-lighter/10 to-theme-surface">
+    <div class="container">
+      <div class="max-w-4xl mx-auto">
+        <SectionHeading
+          align="center"
+          eyebrow="Cómo acompañamos"
+          title="Cada proceso es único"
+          description="Entendemos que cada historia es diferente. Por eso, consideramos fundamental escuchar sin juzgar, respetar los tiempos individuales y reconocer las necesidades particulares de cada persona."
+          class="mb-12"
+        />
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {approaches.map((a) => (
+            <div class="card flex h-full flex-col p-8">
+              <div class={`mb-5 flex h-14 w-14 items-center justify-center rounded-full ${a.tint}`}>
+                <Icon name={a.icon} size="lg" />
+              </div>
+              <h3 class="text-xl font-bold text-theme-text-primary mb-3">{a.title}</h3>
+              <p class="text-theme-text-secondary leading-relaxed">{a.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CallToActionSection
+    heading="Estamos para escucharte"
+    subheading="Si necesitás orientación o querés conocer más sobre Regénesis, ponete en contacto con nosotros."
+    secondaryAction={acciones.informacion}
+  />
+</Layout>

@@ -1,0 +1,86 @@
+---
+import Icon from "./Icon.astro";
+import SectionHeading from "./SectionHeading.astro";
+import { redSocial } from "../lib/contacto";
+import type { IconName } from "../types/icons";
+
+interface Red {
+  label: string;
+  href: string;
+  icon: IconName;
+  description: string;
+  tint: string;
+}
+
+const instagram = redSocial("instagram");
+const facebook = redSocial("facebook");
+
+const redes: Red[] = [
+  ...(instagram
+    ? [
+        {
+          label: instagram.label,
+          href: instagram.href,
+          icon: "instagram" as IconName,
+          description: "Fotos, novedades y el día a día de nuestros encuentros y talleres.",
+          tint: "bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-200",
+        },
+      ]
+    : []),
+  ...(facebook
+    ? [
+        {
+          label: facebook.label,
+          href: facebook.href,
+          icon: "facebook" as IconName,
+          description: "Noticias de la asociación y momentos compartidos con la comunidad.",
+          tint: "bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-200",
+        },
+      ]
+    : []),
+];
+---
+
+{redes.length > 0 && (
+  <section
+    class="section-sm bg-gradient-to-b from-theme-surface-muted to-theme-surface"
+    aria-labelledby="redes-heading"
+  >
+    <div class="container">
+      <SectionHeading
+        id="redes-heading"
+        align="center"
+        eyebrow="Comunidad en redes"
+        title="Seguinos en nuestras redes"
+        description="Conocé el día a día de Regénesis, nuestras actividades y las novedades de la comunidad."
+        class="mb-10"
+      />
+
+      <div class="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
+        {redes.map((red) => (
+          <a
+            href={red.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Visitar el ${red.label} de Regénesis (se abre en una nueva pestaña)`}
+            class="group card card-interactive flex h-full flex-col p-8"
+          >
+            <div class={`mb-5 flex h-14 w-14 items-center justify-center rounded-full ${red.tint}`}>
+              <Icon name={red.icon} size="lg" />
+            </div>
+            <h3 class="mb-3 text-xl font-bold text-theme-text-primary">{red.label}</h3>
+            <p class="text-theme-text-secondary leading-relaxed">{red.description}</p>
+            <span class="mt-auto inline-flex items-center gap-1 pt-5 font-semibold text-theme-primary">
+              Visitar {red.label}
+              <Icon
+                name="arrow-right"
+                size="sm"
+                class="transition-transform duration-300 group-hover:translate-x-1"
+              />
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

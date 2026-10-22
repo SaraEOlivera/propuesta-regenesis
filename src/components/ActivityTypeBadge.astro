@@ -1,0 +1,23 @@
+---
+import Icon from "./Icon.astro";
+import { ACTIVITY_TYPE_META, type ActivityType } from "../lib/actividades";
+
+interface Props {
+  type: ActivityType;
+  class?: string;
+}
+
+const { type, class: className = "" } = Astro.props;
+const meta = ACTIVITY_TYPE_META[type];
+---
+
+<span
+  class:list={[
+    "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wide",
+    meta.badgeClass,
+    className,
+  ]}
+>
+  <Icon name={meta.icon} size="sm" />
+  {meta.label}
+</span>

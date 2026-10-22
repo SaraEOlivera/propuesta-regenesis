@@ -4,18 +4,17 @@ import type { HeadingLevel } from "../types/design-system";
 interface Props {
   level?: HeadingLevel;
   class?: string;
+  id?: string;
   size?: "default" | "section" | "page";
-  align?: "left" | "center" | "right";
+  /** `inherit` no aplica clases: el título sigue la alineación del contenedor. */
+  align?: "left" | "center" | "right" | "inherit";
 }
 
-const {
-  level = "h2",
-  class: className = "",
-  size = "default",
-  align = "left",
-} = Astro.props;
+const { level = "h2", class: className = "", id, size = "default", align = "left" } = Astro.props;
 
-// Map size variants to consistent Tailwind classes
+// Escala única de títulos. `default` coincide con los estilos base de
+// src/styles/tailwind.css; `page` es el nivel de portada y `section` el de
+// subtítulo dentro de una sección.
 const sizeMappings: Record<HeadingLevel, Record<string, string>> = {
   h1: {
     page: "text-4xl lg:text-5xl",
@@ -23,13 +22,13 @@ const sizeMappings: Record<HeadingLevel, Record<string, string>> = {
     default: "text-3xl lg:text-4xl",
   },
   h2: {
-    page: "text-3xl lg:text-4xl",
+    page: "text-4xl lg:text-5xl",
     section: "text-2xl lg:text-3xl",
-    default: "text-2xl lg:text-3xl",
+    default: "text-3xl lg:text-4xl",
   },
   h3: {
     page: "text-2xl lg:text-3xl",
-    section: "text-xl lg:text-2xl",
+    section: "text-lg lg:text-xl",
     default: "text-xl lg:text-2xl",
   },
   h4: {
@@ -53,6 +52,7 @@ const alignClasses = {
   left: "text-left",
   center: "text-center",
   right: "text-right",
+  inherit: "",
 };
 
 const sizeClass = sizeMappings[level][size];
@@ -63,6 +63,6 @@ const allClasses = [baseClasses, sizeClass, alignClass, className].filter(Boolea
 const Element = level;
 ---
 
-<Element class={allClasses}>
+<Element class={allClasses} id={id}>
   <slot />
 </Element>

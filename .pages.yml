@@ -1,0 +1,255 @@
+media:
+  - name: actividades
+    label: Fotos de actividades
+    input: src/assets/actividades
+    output: ../../assets/actividades
+    categories: [image]
+    extensions: [jpg, jpeg, png, webp, avif]
+    rename: safe
+
+content:
+  - name: actividades
+    label: Actividades
+    type: collection
+    path: src/content/actividades
+    format: yaml-frontmatter
+    filename: "{year}-{month}-{day}-{title}.md"
+    subfolders: false
+    view:
+      primary: title
+      fields: [title, type, date, published]
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Título
+        type: string
+        required: true
+        description: Nombre de la actividad tal como se va a mostrar en el sitio.
+
+      - name: slug
+        label: URL de la actividad
+        type: string
+        pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        description: "Opcional. Define la dirección de la actividad, por ejemplo /actividades/taller-de-oficios. Si se deja vacío, se usa el nombre del archivo."
+
+      - name: type
+        label: Tipo de actividad
+        type: select
+        required: true
+        options:
+          values:
+            - name: taller
+              label: Taller
+            - name: charla
+              label: Charla
+            - name: evento
+              label: Evento
+
+      - name: date
+        label: Fecha
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+        description: Las actividades con fecha de hoy o posterior aparecen en "Próximas actividades". Las anteriores pasan a "Actividades realizadas".
+
+      - name: time
+        label: Hora de inicio
+        type: string
+        pattern: '^([01]\d|2[0-3]):[0-5]\d$'
+        description: "Opcional. Formato de 24 horas, por ejemplo 18:30."
+
+      - name: endTime
+        label: Hora de fin
+        type: string
+        pattern: '^([01]\d|2[0-3]):[0-5]\d$'
+        description: "Opcional. Formato de 24 horas, por ejemplo 20:00."
+
+      - name: location
+        label: Lugar
+        type: string
+        description: "Opcional. Por ejemplo: Sede Regénesis, Barrio Belgrano, Rosario."
+
+      - name: modality
+        label: Modalidad
+        type: select
+        default: presencial
+        options:
+          values:
+            - name: presencial
+              label: Presencial
+            - name: virtual
+              label: Virtual
+            - name: mixta
+              label: Mixta
+
+      - name: summary
+        label: Resumen
+        type: text
+        required: true
+        options:
+          maxlength: 300
+        description: Texto breve que aparece en las tarjetas y en los resultados de búsqueda.
+
+      - name: cover
+        label: Imagen principal
+        type: image
+        options:
+          media: actividades
+          categories: [image]
+          rename: safe
+        description: Opcional. Si no se carga, la tarjeta usa un diseño con el color del tipo de actividad.
+
+      - name: coverAlt
+        label: Descripción de la imagen principal
+        type: string
+        description: Texto alternativo para accesibilidad. Si se deja vacío, se usa el título de la actividad.
+
+      - name: gallery
+        label: Fotos de la actividad
+        type: image
+        options:
+          media: actividades
+          categories: [image]
+          rename: safe
+          unique: true
+          multiple:
+            max: 12
+        description: Opcional. Se muestran en la página de detalle y en la galería de Actividades.
+
+      - name: galleryAlts
+        label: Textos alternativos de las fotos
+        type: string
+        list: true
+        description: "Opcional. Un texto por foto, en el mismo orden que la galería. Si falta, se usa 'Título - Foto N'."
+
+      - name: registrationUrl
+        label: Link de inscripción o consulta
+        type: string
+        description: "Opcional. Puede ser un enlace interno, por ejemplo /contacto, o una URL externa. Si se deja vacío, se muestra el botón de contacto general."
+
+      - name: published
+        label: Publicada
+        type: boolean
+        default: true
+        description: Si se desactiva, la actividad no aparece en el sitio.
+
+      - name: body
+        label: Descripción completa
+        type: rich-text
+        options:
+          media: false
+        description: Texto que se muestra en la página de detalle. Las fotos se cargan en los campos de imagen, no dentro del texto.
+
+  - name: donacion
+    label: Donaciones
+    type: file
+    path: src/data/donacion.json
+    format: json
+    fields:
+      - name: activa
+        label: Habilitar donaciones online
+        type: boolean
+        description: Activa el botón de Mercado Pago cuando su URL esté cargada.
+
+      - name: mercadoPagoUrl
+        label: Link de pago de Mercado Pago
+        type: string
+        description: "Pegá el Link de pago creado en la cuenta institucional. Debe empezar con https://. Si está vacío, la página muestra el aviso de 'Próximamente'."
+
+      - name: transferenciaAlias
+        label: Alias para transferencias
+        type: string
+        description: Opcional. Si se completa, se muestra como alternativa de donación.
+
+      - name: transferenciaCvu
+        label: CVU para transferencias
+        type: string
+        description: Opcional. Si se completa, se muestra como alternativa de donación.
+
+      - name: transferenciaTitular
+        label: Titular de la cuenta
+        type: string
+        description: Nombre de la asociación o titular que aparece en la cuenta de destino.
+
+      - name: datosDeEjemplo
+        label: Datos de ejemplo
+        type: boolean
+        description: Muestra un aviso en la página mientras los datos de transferencia sean provisionales. Desactivar cuando se carguen los datos reales.
+
+  - name: navegacion
+    label: Datos de contacto y navegación
+    type: file
+    path: src/data/navegacion.json
+    format: json
+    fields:
+      - name: brand
+        label: Marca
+        type: object
+        fields:
+          - name: name
+            label: Nombre de la organización
+            type: string
+            required: true
+
+      - name: contact
+        label: Contacto
+        type: object
+        fields:
+          - name: addressLine1
+            label: Dirección (línea 1)
+            type: string
+            required: true
+          - name: addressLine2
+            label: Dirección (línea 2)
+            type: string
+            required: true
+          - name: phone
+            label: Teléfono
+            type: string
+            required: true
+          - name: email
+            label: Correo electrónico
+            type: string
+            required: true
+
+      - name: social
+        label: Redes sociales
+        type: object
+        list: true
+        fields:
+          - name: label
+            label: Nombre
+            type: string
+            required: true
+          - name: href
+            label: URL
+            type: string
+            required: true
+          - name: icon
+            label: Icono
+            type: select
+            options:
+              values: [instagram, facebook]
+
+      - name: links
+        label: Enlaces de navegación
+        type: object
+        list: true
+        fields:
+          - name: label
+            label: Nombre
+            type: string
+            required: true
+          - name: href
+            label: Ruta
+            type: string
+            required: true
+          - name: icon
+            label: Icono
+            type: select
+            options:
+              values: [home, info, clipboard, calendar]

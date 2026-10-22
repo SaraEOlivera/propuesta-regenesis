@@ -1,169 +1,165 @@
 ---
 // src/layouts/Layout.astro
-import { ClientRouter } from "astro:transitions";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import BackToTop from "../components/BackToTop.astro";
 import "../styles/tailwind.css";
-import nav from "../data/navigation.json";
+import { nav } from "../lib/nav";
 import { withBase } from "../lib/url";
 
 interface Props {
-	title?: string;
-	description?: string;
+  title?: string;
+  description?: string;
+  /** Evita que buscadores indexen la página (ej. 404). */
+  noindex?: boolean;
+  /** Imagen social absoluta. Si se omite, se usa la imagen institucional. */
+  image?: string;
+  imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  imageType?: string;
+  ogType?: "website" | "article";
+  /** Datos estructurados adicionales (Event, FAQPage, BreadcrumbList, etc.). */
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description } = Astro.props;
+const {
+  title,
+  description,
+  noindex = false,
+  image,
+  imageAlt,
+  imageWidth = 1200,
+  imageHeight = 630,
+  imageType = "image/jpeg",
+  ogType = "website",
+  structuredData,
+} = Astro.props;
 
 const defaultTitle = nav.brand.name;
 const defaultDescription =
-	"Professional Healthcare Services - Expert care delivered to your home";
+  "Regénesis es una asociación civil de Rosario que acompaña a personas que atraviesan situaciones de consumo problemático y a sus familias.";
+
+const pageTitle = title ?? defaultTitle;
+const pageDescription = description ?? defaultDescription;
+
+const siteURL = Astro.site ?? new URL(Astro.url.origin);
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+const currentPath = Astro.url.pathname;
+const canonicalPath =
+  basePath && currentPath !== basePath && !currentPath.startsWith(`${basePath}/`)
+    ? `${basePath}${currentPath.startsWith("/") ? currentPath : `/${currentPath}`}`
+    : currentPath;
+const canonicalURL = new URL(canonicalPath, siteURL);
+const defaultOgImage = new URL(withBase("/og-image.jpg"), siteURL).href;
+const ogImage = image ?? defaultOgImage;
+const ogImageAlt = imageAlt ?? "Comunidad de Regénesis en un encuentro";
+const structuredDataList = structuredData
+  ? Array.isArray(structuredData)
+    ? structuredData
+    : [structuredData]
+  : [];
+
+const organization = {
+  "@context": "https://schema.org",
+  "@type": "NGO",
+  name: nav.brand.name,
+  url: new URL(withBase("/"), siteURL).href,
+  logo: new URL(withBase("/apple-touch-icon.png"), siteURL).href,
+  image: ogImage,
+  description: defaultDescription,
+  email: nav.contact.email,
+  telephone: nav.contact.phone,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: nav.contact.addressLine1,
+    addressLocality: "Rosario",
+    addressRegion: "Santa Fe",
+    addressCountry: "AR",
+  },
+  sameAs: nav.social.map((social) => social.href),
+};
 ---
+
 <!doctype html>
-<html lang="en">
+<html lang="es-AR">
   <head>
-    <!-- Required meta tags -->
+    <!-- Metadatos obligatorios -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title ?? defaultTitle}</title>
-    <meta name="description" content={description ?? defaultDescription} />
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={title ?? defaultTitle} />
-    <meta property="og:description" content={description ?? defaultDescription} />
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#1b3b6f" />
-    <!-- Favicon placeholder - replace with your own -->
-    <link rel="icon" type="image/svg+xml" href={withBase("/reg_logo.ico")} />
-    <!-- Client Router for smooth SPA-like navigation (Astro 7+) -->
-    <ClientRouter />
+    <meta name="color-scheme" content="light dark" />
+    <meta id="theme-color-meta" name="theme-color" content="#ffffff" />
+    <script is:inline>
+      (() => {
+        const KEY = "regenesis-theme";
+        let mode = "auto";
+        try {
+          const saved = localStorage.getItem(KEY);
+          if (saved === "auto" || saved === "light" || saved === "dark") {
+            mode = saved;
+          }
+        } catch {
+          // localStorage can be unavailable in private contexts
+        }
+        const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const resolved = mode === "auto" ? (systemDark ? "dark" : "light") : mode;
+        const root = document.documentElement;
+        root.dataset.theme = resolved;
+        root.dataset.themeMode = mode;
+        root.style.colorScheme = resolved;
+        const themeColor = document.getElementById("theme-color-meta");
+        if (themeColor) {
+          themeColor.setAttribute("content", resolved === "dark" ? "#0f172a" : "#ffffff");
+        }
+      })();
+    </script>
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    {!noindex && <link rel="canonical" href={canonicalURL} />}
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <!-- Open Graph y redes sociales -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:site_name" content={nav.brand.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content={imageType} />
+    <meta property="og:image:width" content={String(imageWidth)} />
+    <meta property="og:image:height" content={String(imageHeight)} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href={withBase("/favicon.png")} />
+    <link rel="apple-touch-icon" sizes="180x180" href={withBase("/apple-touch-icon.png")} />
+
+    <!-- Datos estructurados de la organización -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(organization)}></script>
+    {structuredDataList.map((data) => (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(data)}></script>
+    ))}
   </head>
-  <body
-		class="flex min-h-dvh flex-col bg-theme-surface-muted font-sans text-theme-text-primary antialiased selection:bg-theme-primary-lighter/50 selection:text-theme-primary-darker"
-	>
+  <body class="flex min-h-dvh flex-col bg-theme-surface-muted text-theme-text-primary antialiased selection:bg-theme-primary-lighter/50 selection:text-theme-primary-darker">
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-theme-surface focus:px-5 focus:py-2 focus:font-semibold focus:text-theme-primary focus:shadow-lg"
+    >
+      Saltar al contenido
+    </a>
     <Nav />
-    <main class="grow">
-      <!-- The page-specific content will be injected here -->
-      <slot>Regenes</slot>
+    <main id="contenido" class="grow scroll-mt-24" tabindex="-1">
+      <!-- Aquí se inyecta el contenido de cada página -->
+      <slot />
     </main>
     <Footer />
-    <!-- Navigation Progress Bar -->
-    <div
-			id="nav-progress"
-			class="fixed top-0 left-0 h-1 bg-theme-primary z-[100] transition-all duration-300 ease-out"
-			style="width: 0%; opacity: 0;"
-		></div>
+    <BackToTop />
   </body>
-
-  <script>
-		// ========================================
-		// CRITICAL: Fix mobile back/forward swipe flash
-		// ========================================
-		// Bypass Astro's view transition for traverse (back/forward) navigation
-		// to let the browser use native bfcache for instant, flash-free navigation
-		document.addEventListener("astro:before-preparation", (event) => {
-			const navEvent = event as any;
-			if (navEvent.navigationType === "traverse") {
-				event.preventDefault(); // Let browser handle natively with bfcache
-			}
-		});
-
-		// ========================================
-		// Scroll Position Handling
-		// ========================================
-		// Scroll to top instantly before swap to prevent scroll flash on forward navigation
-		document.addEventListener("astro:before-swap", (event) => {
-			const swapEvent = event as any;
-			if (swapEvent.navigationType === "push" || swapEvent.navigationType === "replace") {
-				window.scrollTo({ top: 0, behavior: "instant" });
-				if (swapEvent.newDocument) {
-					swapEvent.newDocument.documentElement.style.scrollBehavior = "auto";
-				}
-			}
-		});
-
-		// ========================================
-		// Reset UI State on Navigation
-		// ========================================
-		document.addEventListener("astro:page-load", () => {
-			// Close mobile menu (astro-navbar uses 'hidden' class)
-			const mobileMenu = document.querySelector(".mobile-menu");
-			if (mobileMenu && !mobileMenu.classList.contains("hidden")) {
-				mobileMenu.classList.add("hidden");
-			}
-
-			// Reset mobile menu button state
-			const menuButton = document.getElementById("astronav-menu");
-			if (menuButton) {
-				menuButton.setAttribute("aria-expanded", "false");
-			}
-
-			// Reset header visibility (if using hide-on-scroll)
-			const header = document.querySelector("header");
-			if (header) {
-				(header as HTMLElement).style.transform = "translateY(0)";
-			}
-		});
-
-		// ========================================
-		// Navigation Loading Feedback (Progress Bar)
-		// ========================================
-		let progressInterval: ReturnType<typeof setInterval> | null = null;
-		let progressValue = 0;
-
-		document.addEventListener("astro:before-preparation", () => {
-			const progressBar = document.getElementById("nav-progress");
-			if (!progressBar) return;
-
-			// Reset and show progress bar
-			progressValue = 0;
-			progressBar.style.width = "0%";
-			progressBar.style.opacity = "1";
-
-			// Animate progress (simulated, reaches ~90% before actual load completes)
-			progressInterval = setInterval(() => {
-				progressValue += (90 - progressValue) * 0.1;
-				progressBar.style.width = `${progressValue}%`;
-			}, 50);
-		});
-
-		document.addEventListener("astro:page-load", () => {
-			const progressBar = document.getElementById("nav-progress");
-			if (!progressBar) return;
-
-			// Clear the interval
-			if (progressInterval) {
-				clearInterval(progressInterval);
-				progressInterval = null;
-			}
-
-			// Complete the progress bar
-			progressBar.style.width = "100%";
-
-			// Hide after completion
-			setTimeout(() => {
-				progressBar.style.opacity = "0";
-				setTimeout(() => {
-					progressBar.style.width = "0%";
-				}, 300);
-			}, 150);
-		});
-  </script>
-
-  <style is:global>
-		/* Touch feedback for mobile navigation */
-		a, button {
-			-webkit-tap-highlight-color: transparent;
-		}
-
-		a:active:not(:disabled),
-		button:active:not(:disabled) {
-			transform: scale(0.98);
-		}
-
-		/* Ensure buttons/links with explicit transforms don't get overridden */
-		.hover\:scale-105:active {
-			transform: scale(1.02) !important;
-		}
-  </style>
 </html>

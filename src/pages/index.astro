@@ -1,350 +1,242 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
-import imagenCentral from "../assets/main-hero.jpg";
+import ActivityCard from "../components/ActivityCard.astro";
+import { isUpcoming, sortUpcoming } from "../lib/actividades";
+import { acciones } from "../lib/acciones";
+import { whatsappUrl } from "../lib/contacto";
+import { rutas } from "../lib/rutas";
+import imagenCentral from "../assets/actividades/campamento.jpg";
 import nombreRegenesis from "../assets/por-que-regenesis.jpg";
-import mensaje from "../assets/seccion-mensaje.jpg";
-import recuperarse from "../assets/recuperarse.jpg";
-import ServicesIntroSection from "../components/ServicesIntroSection.astro";
-import FaqAccordion from "../components/FaqAccordion.astro";
-import faqs from "../data/faqs.json";
-import NumberCounter from "../components/NumberCounter.astro";
+import mensaje from "../assets/actividades/salida-cena.jpg";
+import ctaComunidad from "../assets/actividades/charla-grupo.jpg";
+import QueHacemosSection from "../components/QueHacemosSection.astro";
+import CallToActionSection from "../components/CallToActionSection.astro";
+import SectionHeading from "../components/SectionHeading.astro";
 import Button from "../components/Button.astro";
-import Icon from "../components/Icon.astro";
 import Link from "../components/Link.astro";
+import { placeholderStyle } from "../lib/images";
 
-interface ServiceCard {
-	title: string;
-	description: string;
-	link: string;
-}
+const upcomingActivities = (
+  await getCollection("actividades", ({ data }) => data.published !== false)
+)
+  .filter((activity) => isUpcoming(activity.data.date))
+  .sort(sortUpcoming)
+  .slice(0, 3);
 
-const serviceCards: ServiceCard[] = [
-	{
-		title: "Professional Care Services",
-		description:
-			"Expert care tailored to your needs in the comfort of your home",
-		link: "/services#care",
-	},
-	{
-		title: "Specialized Support",
-		description: "Specialized support for complex medical conditions",
-		link: "/services#specialty",
-	},
-	{
-		title: "24/7 Support",
-		description: "Round-the-clock care and support when you need it most",
-		link: "/services#support",
-	},
-];
+const [heroPlaceholder, nombrePlaceholder, mensajePlaceholder] = await Promise.all([
+  placeholderStyle(imagenCentral),
+  placeholderStyle(nombreRegenesis),
+  placeholderStyle(mensaje),
+]);
 ---
 
 <Layout
-	title="Regénesis  | Centro Integral de Adicciones"
-	description="Comunidad terapéutica para el tratamiento de adicciones"
+  title="Regénesis | Centro Integral en Adicciones en Rosario"
+  description="Regénesis es un centro integral en adicciones de Rosario. Acompañamos a personas que atraviesan consumos problemáticos y a sus familias con contención, tratamiento y comunidad."
 >
-	<!-- Hero Section -->
-	<section
-		class="relative min-h-[85vh] flex items-center justify-center text-center px-4 py-12"
-		role="banner"
-		aria-label="Hero Section"
-	>
-		<div class="absolute inset-0 z-0">
-			<Image
-				src={imagenCentral}
-				alt="Professional healthcare services"
-				class="w-full h-full object-cover object-top"
-				loading="eager"
-				fetchpriority="high"
-				width={1920}
-				height={1080}
-			/>
-			<div
-				class="absolute inset-0 bg-gradient-to-r from-black/60 to-black/35"
-			>
-			</div>
-		</div>
+  <!-- Portada -->
+  <section
+    class="relative flex min-h-[85vh] items-center justify-center py-12 text-center"
+    aria-label="Portada"
+  >
+    <div class="absolute inset-0 z-0">
+      <Image
+        src={imagenCentral}
+        alt="Personas de Regénesis en un encuentro comunitario"
+        class="w-full h-full object-cover object-top"
+        style={heroPlaceholder}
+        widths={[480, 640, 960, 1200]}
+        sizes="100vw"
+        quality={70}
+        loading="eager"
+        fetchpriority="high"
+        width={1200}
+        height={900}
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40"></div>
+    </div>
 
-		<div class="container relative z-10 flex justify-center items-center">
-			<div
-				class="max-w-3xl text-white text-center mx-auto flex flex-col items-center justify-center"
-			>
-				<!-- 1. TÍTULO PRINCIPAL (Centrado, bajado y sin saltos de línea sobrantes) -->
-				<h1
-					class="text-5xl md:text-7xl font-extrabold leading-tight mb-2 tracking-tight animate-fade-in"
-				>
-					REGENESIS
-				</h1>
+    <div class="container relative z-10 flex justify-center items-center">
+      <div class="max-w-3xl text-white text-center mx-auto flex flex-col items-center justify-center">
+        <h1 class="brand text-5xl md:text-7xl leading-tight mb-2 animate-fade-in text-white">
+          REGÉNESIS
+        </h1>
 
-				<!-- 2. SUBTÍTULO (Más grande y muy pegado al título) -->
-				<p
-					class="text-xl md:text-2xl mb-4 text-white/60 opacity-95 leading-relaxed font-light max-w-lg"
-				>
-					Centro Integral en Adicciones
-				</p>
+        <p class="text-xl md:text-2xl mb-4 text-white/90 leading-relaxed font-light max-w-lg">
+          Centro Integral en Adicciones
+        </p>
 
-				<!-- 3. BOTONES (Ubicados inmediatamente debajo del texto y centrados) -->
-				<div
-					class="flex flex-wrap gap-3 md:gap-4 justify-center items-center mt-2"
-				>
-					<Button
-						variant="white"
-						size="lg"
-						href="/contact"
-						class="hover:shadow-xl hover:scale-105"
-						>Necesito ayuda</Button
-					>
-					<Button
-						variant="primary"
-						size="lg"
-						href="/careers"
-						class="ring-2 ring-white/20 hover:shadow-xl hover:scale-105"
-						>Quiero donar</Button
-					>
-				</div>
-			</div>
-		</div>
-	</section>
+        <div class="flex flex-wrap gap-3 md:gap-4 justify-center items-center mt-2">
+          <Button
+            variant="white"
+            size="lg"
+            href={acciones.ayuda.href}
+            class="hover:shadow-xl hover:scale-105"
+          >
+            {acciones.ayuda.label}
+          </Button>
+          <Button
+            variant="primary"
+            size="lg"
+            href={acciones.donar.href}
+            icon={acciones.donar.icon}
+            iconPosition="left"
+            class="ring-2 ring-white/20 hover:shadow-xl hover:scale-105"
+          >
+            {acciones.donar.label}
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-	<!-- About Section - Asymmetric editorial layout -->
-	<section class="section bg-theme-surface">
-		<div class="container">
-			<div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-				<div class="order-2 lg:order-1">
-					<p
-						class="text-sm font-medium tracking-widest uppercase text-theme-primary mb-4"
-					>
-						Sobre nosotros
-					</p>
-					<h2 class="mb-6">¿Por qué nos llamamos Regénesis?</h2>
-					<p
-						class="text-theme-text-secondary text-lg leading-relaxed mb-6"
-					>
-					Detrás de nuestro nombre hay una convicción: toda persona tiene la 
-					capacidad de reconstruir su vida y reencontrarse con aquello para lo que
-					 fue creada.
+  <!-- Sobre nosotros -->
+  <section class="section bg-theme-surface">
+    <div class="container">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div class="order-2 lg:order-1">
+          <SectionHeading
+            eyebrow="Sobre nosotros"
+            title="¿Por qué nos llamamos Regénesis?"
+            class="mb-6"
+          />
+          <p class="text-theme-text-secondary text-lg leading-relaxed mb-6">
+            Detrás de nuestro nombre hay una convicción: toda persona tiene la capacidad de
+            reconstruir su vida y reencontrarse con aquello para lo que fue creada.
+          </p>
 
-					</p>
+          <p class="text-theme-text-secondary text-lg leading-relaxed mb-6">
+            Regénesis significa volver al origen. Volver a empezar. Regresar al propósito.
+          </p>
 
-					<p
-						class="text-theme-text-secondary text-lg leading-relaxed mb-6"
-					>
-					Regenesis significa volver al origen. Volver a empezar. Regresar al propósito.
-					</p>
+          <p class="text-theme-text-secondary text-lg leading-relaxed mb-6">
+            Porque más allá del dolor, de las adicciones, de las heridas que dejan las experiencias
+            difíciles, hay algo que nunca se pierde del todo: una esencia valiosa, un propósito que
+            sigue esperando ser recuperado.
+          </p>
 
-					<p
-						class="text-theme-text-secondary text-lg leading-relaxed mb-6"
-					>
-					Porque más allá del dolor, de las adicciones, de las 
-					heridas que dejan las experiencias difíciles, hay algo 
-					que nunca se pierde del todo: una esencia valiosa, un 
-					propósito que sigue esperando ser recuperado.
-					</p>
+          <p class="text-theme-text-secondary text-lg leading-relaxed mb-6">
+            Acompañamos a personas que atraviesan situaciones de consumo problemático desde una
+            mirada integral —biológica, psicológica, social y espiritual— con contención,
+            tratamiento y herramientas reales para construir una nueva forma de vivir.
+          </p>
+        </div>
+        <div class="order-1 lg:order-2">
+          <div class="relative">
+            <div class="rounded-2xl overflow-hidden shadow-xl aspect-[4/3] w-full">
+              <Image
+                src={nombreRegenesis}
+                alt="Personas de la comunidad de Regénesis reunidas"
+                class="w-full h-full object-cover object-center"
+                widths={[400, 600, 800, 1080]}
+                sizes="(min-width: 1024px) 45vw, 90vw"
+                quality={70}
+                loading="lazy"
+                style={nombrePlaceholder}
+              />
+            </div>
+            <!-- Acento decorativo -->
+            <div class="absolute -bottom-4 -left-4 w-24 h-24 bg-theme-primary-lighter/30 rounded-2xl -z-10"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- Qué hacemos -->
+  <section class="section bg-gradient-to-b from-theme-primary-lighter/10 via-theme-primary-lighter/5 to-theme-surface">
+    <QueHacemosSection />
+  </section>
 
-					<p
-						class="text-theme-text-secondary text-lg leading-relaxed mb-6"
-					>
-					Acompañamos a personas que atraviesan problemáticas de consumo desde 
-					una mirada integral —biológica, psicológica, social y espiritual— con 
-					contención, tratamiento y herramientas reales para construir una nueva 
-					forma de vivir.
+  <!-- Mensaje de acompañamiento con imagen -->
+  <section class="section bg-theme-surface">
+    <div class="container">
+      <SectionHeading
+        align="center"
+        title="El cambio es posible"
+        description="Acompañamos tu proceso de recuperación"
+        class="mb-12"
+      />
 
-					</p>
+      <div class="mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
+        <!-- Imagen ovalada -->
+        <div class="lg:w-1/2">
+          <div class="relative">
+            <!-- Máscara ovalada de la imagen -->
+            <div class="aspect-[16/9] rounded-[50%] overflow-hidden shadow-2xl ring-1 ring-black/5">
+              <Image
+                src={mensaje}
+                alt="Grupo de personas en comunidad"
+                class="w-full h-full object-cover sepia-[0.25] saturate-[1.15] brightness-[0.98]"
+                widths={[480, 800, 1100, 1541]}
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                quality={70}
+                loading="lazy"
+                style={mensajePlaceholder}
+              />
+            </div>
+          </div>
+        </div>
+        <!-- Contenido -->
+        <div class="lg:w-1/2 space-y-6">
+          <p class="text-lg leading-relaxed text-theme-text-secondary">
+            En Regénesis acompañamos a cada persona de manera integral: cuerpo, mente, vínculos y
+            espíritu. Creemos que cada día cuenta, cada historia importa. El camino de recuperación
+            se construye paso a paso, acompañado y en comunidad. Ninguna persona debería atravesar
+            esto en soledad.
+          </p>
+          <p class="text-lg leading-relaxed text-theme-text-secondary">
+            Si hoy estás pasando un momento difícil, o alguien cercano lo está pasando, no tenés que
+            hacerlo solo. En Regénesis acompañamos procesos de recuperación completos, con avances y
+            retrocesos, desde el respeto, la escucha y la comunidad. Si vos o alguien que conocés lo
+            necesita, estamos para acompañar. El cambio es posible.
+          </p>
+          <div class="pt-6">
+            <Link
+              href={whatsappUrl(
+                "Hola, quiero hacer una consulta sobre el acompañamiento de Regénesis.",
+              )}
+              iconName="arrow-right"
+            >
+              Escribinos por WhatsApp
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- Próximas actividades -->
+  {upcomingActivities.length > 0 && (
+    <section class="section bg-gradient-to-b from-theme-surface to-theme-surface-muted">
+      <div class="container">
+        <div class="mb-10 flex flex-wrap items-end justify-between gap-6">
+          <SectionHeading
+            eyebrow="Agenda"
+            title="Próximas actividades"
+            description="Talleres, charlas y encuentros para compartir, aprender y seguir construyendo comunidad."
+          />
+          <Link href={rutas.actividades} variant="inline" class="gap-2 font-semibold">
+            Ver todas las actividades
+          </Link>
+        </div>
 
-					<!-- <div class="text-center md:text-left">
-						<Link href="/about">Learn more about us</Link>
-					</div> -->
-				</div>
-				<div class="order-1 lg:order-2">
-					<div class="relative">
-						<div class="rounded-2xl overflow-hidden shadow-xl aspect-[4/3] w-full">
-							<Image
-								src={nombreRegenesis}
-								alt="Por que nos llamamos Regenesis"
-								class="w-full h-full object-cover object-center"
-								loading="lazy"
-							/>
-						</div>
-						<!-- Decorative accent -->
-						<div
-							class="absolute -bottom-4 -left-4 w-24 h-24 bg-theme-primary-lighter/30 rounded-2xl -z-10"
-						>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+        <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {upcomingActivities.map((activity) => (
+            <ActivityCard activity={activity} variant="compact" />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
-	<!-- Services Section -->
-	<section
-		class="section bg-gradient-to-b from-theme-primary-lighter/10 via-theme-primary-lighter/5 to-theme-surface"
-	>
-		<ServicesIntroSection />
-	</section>
-	
-	<!-- Mensaje de acompañamiento con imagen -->
-	<section class="bg-theme-surface pt-4 pb-12 md:pt-8 md:pb-16">
-		<div class="container">
-			<div class="text-center mb-16">
-				<h2
-					class="text-3xl lg:text-4xl font-bold text-theme-text-primary mb-4"
-				>
-					El cambio es posible
-				</h2>
-				<p class="text-lg text-theme-text-secondary">
-					Acompañamos tu proceso de recuperación
-				</p>
-			</div>
-
-			<div
-				class="mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-20"
-			>
-				<!-- Oval Image Container -->
-				<div class="lg:w-1/2">
-					<div class="relative">
-						<!-- Oval mask for the image -->
-						<div
-							class="aspect-[16/9] rounded-[50%] overflow-hidden shadow-2xl ring-1 ring-black/5"
-						>
-							<Image
-								src={mensaje}
-								alt="Grupo de personas en comunidad"
-								class="w-full h-full object-cover sepia-[0.25] saturate-[1.15] brightness-[0.98]"
-								loading="lazy"
-							/>
-							
-						</div>
-					</div>
-				</div>
-				<!-- Content -->
-				<div class="lg:w-1/2 space-y-6">
-					<div
-						class="prose prose-lg max-w-none text-theme-text-secondary"
-					>
-						<p class="text-lg leading-relaxed">
-							 En Regénesis acompañamos a cada persona de manera integral: 
-							 cuerpo, mente, vínculos y espíritu. Creemos que cada día cuenta, 
-							 cada historia importa. El camino de recuperación se construye paso
-							  a paso, acompañado y en comunidad. Ninguna persona debería atravesar
-							   esto en soledad.
-						</p>
-						<p class="text-lg leading-relaxed">
-							Si hoy estás pasando un momento difícil, o alguien cercano lo está 
-							pasando, no tenés que hacerlo solo. En Regénesis acompañamos procesos
-							 de recuperación completos, con avances y retrocesos, desde el respeto, 
-							 la escucha y la comunidad. Si vos 
-							o alguien que conocés lo necesita, estamos para acompañar. El cambio 
-							 es posible. 
-
-						</p>
-					</div>
-					<div class="pt-6">
-						<Link href="/contact">Comunicate con nosotros</Link>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- FAQ Section -->
-	<!-- <section
-		class="section bg-gradient-to-b from-theme-surface-muted to-theme-surface"
-	>
-		<div class="container">
-			<div class="narrow mx-auto">
-				<div class="text-center mb-12">
-					<p
-						class="text-sm font-medium tracking-widest uppercase text-theme-primary mb-4"
-					>
-						FAQ
-					</p>
-					<h2>Common Questions</h2>
-				</div>
-				<FaqAccordion items={faqs.slice(0, 4)} />
-				<div class="text-center mt-10">
-					<Link href="/info">View all FAQs</Link>
-				</div>
-			</div>
-		</div>
-	</section> -->
-
-	<!-- CTA Section -->
-	<section class="relative py-20 lg:py-28 overflow-hidden">
-		<div class="absolute inset-0">
-			<Image
-				src={recuperarse}
-				alt="Healthcare environment"
-				class="w-full h-full object-cover"
-				loading="lazy"
-			/>
-			<div class="absolute inset-0 bg-theme-primary-darker/60"></div>
-		</div>
-		<div class="relative container">
-			<div class="max-w-2xl mx-auto text-center text-white">
-				<h2 class="mb-6 text-white/80">Recuperarse es un camino que se construye entre todos</h2>
-				<!-- <p class="text-lg mb-10 text-white/80 font-primary">
-					Comunicate para iniciar tu camino de recuperación.
-				</p> -->
-				<Button variant="white" href="/contact"> Contacto </Button>
-			</div>
-		</div>
-	</section>
+  <!-- Llamado a la acción -->
+  <CallToActionSection
+    heading="Recuperarse es un camino que se construye entre todos"
+    subheading="Sumate a los talleres, charlas y encuentros que hacemos en comunidad."
+    primaryAction={acciones.actividades}
+    backgroundImage={ctaComunidad}
+  />
 </Layout>
-
-<style>
-	.stats-circle {
-		opacity: 0;
-		animation: fadeInScale 0.8s ease-out forwards;
-		animation-play-state: paused;
-	}
-
-	@keyframes fadeInScale {
-		from {
-			opacity: 0;
-			transform: scale(0.8);
-		}
-		to {
-			opacity: 1;
-			transform: scale(1);
-		}
-	}
-</style>
-
-<script>
-	// Single IntersectionObserver for stats animation (memory efficient)
-	const statsObserver = new IntersectionObserver(
-		(entries) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting) {
-					const circles =
-						entry.target.querySelectorAll(".stats-circle");
-					circles.forEach((circle) => {
-						(circle as HTMLElement).style.animationPlayState =
-							"running";
-					});
-					statsObserver.unobserve(entry.target);
-				}
-			});
-		},
-		{ threshold: 0.2 },
-	);
-
-	function initStatsAnimation() {
-		const section = document.querySelector(".stats-container");
-		if (section) {
-			// Reset animation state for view transitions
-			const circles = section.querySelectorAll(".stats-circle");
-			circles.forEach((circle) => {
-				(circle as HTMLElement).style.animationPlayState = "paused";
-			});
-			statsObserver.observe(section);
-		}
-	}
-
-	// Run on initial load and after view transitions
-	initStatsAnimation();
-	document.addEventListener("astro:page-load", initStatsAnimation);
-</script>

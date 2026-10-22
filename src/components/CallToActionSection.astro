@@ -1,28 +1,31 @@
 ---
-import heroServicesImage from "../assets/regenesis/action.jpeg";
+import heroServicesImage from "../assets/actividades/deporte-comunidad.jpg";
 import { Image } from "astro:assets";
 import Button from "./Button.astro";
 import Heading from "./Heading.astro";
+import { placeholderStyle } from "../lib/images";
+import { acciones, type Accion } from "../lib/acciones";
 
 interface Props {
   heading: string;
   subheading: string;
-  primaryButtonText: string;
-  primaryButtonLink: string;
-  secondaryButtonText?: string;
-  secondaryButtonLink?: string;
+  /** Acción principal. Por defecto, contacto. */
+  primaryAction?: Accion;
+  /** Acción secundaria opcional (actividades, información, etc.). */
+  secondaryAction?: Accion;
   backgroundImage?: ImageMetadata;
 }
 
 const {
   heading,
   subheading,
-  primaryButtonText,
-  primaryButtonLink,
-  secondaryButtonText,
-  secondaryButtonLink,
+  primaryAction = acciones.contacto,
+  secondaryAction,
   backgroundImage = heroServicesImage,
 } = Astro.props;
+
+const accionPrincipal: Accion = primaryAction;
+const imagePlaceholder = await placeholderStyle(backgroundImage);
 ---
 
 <section class="relative isolate overflow-hidden py-20 sm:py-24 lg:py-28">
@@ -32,6 +35,10 @@ const {
       src={backgroundImage}
       alt=""
       class="h-full w-full object-cover object-center"
+      style={imagePlaceholder}
+      widths={[640, 960, 1280, 1600]}
+      sizes="100vw"
+      quality={40}
       loading="lazy"
     />
   </div>
@@ -42,39 +49,32 @@ const {
     aria-hidden="true"
   ></div>
 
-  <div class="container relative mx-auto px-4">
+  <div class="container relative">
     <div class="narrow mx-auto max-w-3xl text-center text-white">
-      <Heading level="h2" size="page" class="mb-6 text-white">
+      <Heading level="h2" align="center" class="mb-6 text-white">
         {heading}
       </Heading>
 
-      <p
-        class="mx-auto mb-10 max-w-2xl text-lg font-light leading-relaxed text-white/95 sm:text-xl"
-      >
+      <p class="mx-auto mb-10 max-w-2xl text-lg font-light leading-relaxed text-white/95 sm:text-xl">
         {subheading}
       </p>
 
       <div class="flex flex-col flex-wrap justify-center gap-4 sm:flex-row">
         <Button
           variant="white"
-          href={primaryButtonLink}
+          href={accionPrincipal.href}
+          icon={accionPrincipal.icon}
           class="hover:scale-105 hover:shadow-2xl"
-          showIcon={true}
+          showIcon={!accionPrincipal.icon}
         >
-          {primaryButtonText}
+          {accionPrincipal.label}
         </Button>
 
-        {
-          secondaryButtonText && secondaryButtonLink && (
-            <Button
-              variant="white-outline"
-              href={secondaryButtonLink}
-              class="hover:shadow-2xl"
-            >
-              {secondaryButtonText}
-            </Button>
-          )
-        }
+        {secondaryAction && (
+          <Button variant="white-outline" href={secondaryAction.href} class="hover:shadow-2xl">
+            {secondaryAction.label}
+          </Button>
+        )}
       </div>
     </div>
   </div>

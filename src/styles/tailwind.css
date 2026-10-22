@@ -1,27 +1,29 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-@theme {
-  /* Typography - Fonts */
-  --font-primary:
-    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
-    Arial, sans-serif;
-  /* Kept for backward-compat with existing classes (points to primary) */
-  --font-display:
-    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
-    Arial, sans-serif;
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-  /* Breakpoints */
+@theme {
+  /* Typography - Fonts
+     Usamos la stack del sistema: no hay descarga de fuentes y el sitio se ve
+     consistente en cualquier dispositivo. */
+  --font-primary:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-primary);
+  /* Alias de compatibilidad: el diseño usa `font-sans`/`font-primary`. */
+  --font-display: var(--font-primary);
+
+  /* Breakpoints (solo los que no existen por defecto) */
   --breakpoint-xs: 475px;
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --breakpoint-xl: 1280px;
   --breakpoint-xxl: 1366px;
 
   /* Theme Colors - Auto-generates bg-theme-*, text-theme-*, border-theme-* utilities */
   /* Primary Brand Colors */
-  --color-theme-primary: #1b3b6f; /* rgb(27, 59, 111) */
+  --color-theme-primary: #1b3b6f; /* rgb(27, 59, 111) - acento de texto, links e iconos */
+  --color-theme-primary-hover: #21295c; /* hover del acento */
+  --color-theme-primary-solid: #1b3b6f; /* relleno sólido de botones, badges y secciones */
+  --color-theme-primary-solid-hover: #21295c;
   --color-theme-primary-dark: #21295c; /* rgb(33, 41, 92) → hover */
   --color-theme-primary-darker: #181f4a; /* derivado */
   --color-theme-primary-light: #3a5f9a; /* derivado */
@@ -48,7 +50,7 @@
   /* Text Colors */
   --color-theme-text-primary: #111827;
   --color-theme-text-secondary: #374151;
-  --color-theme-text-muted: #5f7686; /* gris azulado, legible sobre blanco */
+  --color-theme-text-muted: #4f6576; /* gris azulado, legible sobre blanco y superficies claras */
   --color-theme-text-on-primary: #ffffff;
   --color-theme-text-on-dark: #ffffff;
 
@@ -91,16 +93,16 @@
 
   /* Typography Scale */
   /* Mobile */
-  --font-size-h1-mobile: 2.5rem; /* 40px */
+  --font-size-h1-mobile: 2.25rem; /* 36px / text-4xl */
   --font-size-h2-mobile: 1.875rem; /* 30px / text-3xl */
-  --font-size-h3-mobile: 1.5rem; /* 24px / text-2xl */
+  --font-size-h3-mobile: 1.25rem; /* 20px / text-xl */
   --font-size-body-mobile: 1rem; /* 16px */
   --font-size-body-lg-mobile: 1.125rem; /* 18px / text-lg */
 
   /* Desktop */
-  --font-size-h1-desktop: 4rem; /* 64px / text-[clamp(2.5rem,5vw,4rem)] */
+  --font-size-h1-desktop: 3rem; /* 48px / text-5xl */
   --font-size-h2-desktop: 2.25rem; /* 36px / text-4xl */
-  --font-size-h3-desktop: 1.875rem; /* 30px / text-3xl */
+  --font-size-h3-desktop: 1.5rem; /* 24px / text-2xl */
   --font-size-body-desktop: 1rem; /* 16px */
   --font-size-body-lg-desktop: 1.125rem; /* 18px */
 
@@ -130,6 +132,41 @@
   --section-spacing-lg: 4rem; /* 64px / spacing.16 */
   --section-spacing-sm: 2rem; /* 32px / spacing.8 */
   --section-spacing-sm-lg: 2.5rem; /* 40px / spacing.10 */
+}
+
+/* Dark theme overrides. The effective theme is set on <html data-theme="dark">. */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-theme-surface: #0f172a;
+  --color-theme-surface-muted: #0b1220;
+  --color-theme-surface-hover: #1e293b;
+
+  --color-theme-text-primary: #f1f5f9;
+  --color-theme-text-secondary: #cbd5e1;
+  --color-theme-text-muted: #94a3b8;
+
+  --color-theme-border-light: #1e293b;
+  --color-theme-border: #334155;
+  --color-theme-border-medium: #475569;
+
+  --color-theme-primary: #a9c1e8;
+  --color-theme-primary-hover: #d3e0f2;
+  --color-theme-primary-solid: #24406f;
+  --color-theme-primary-solid-hover: #2f5591;
+
+  --color-theme-primary-dark: #2f5591;
+  --color-theme-primary-darker: #0d1526;
+  --color-theme-primary-lighter: #6f8fb8;
+
+  --color-theme-accent-sky: #9eb3c2;
+  --color-theme-accent-sky-light: #9eb3c2cc;
+
+  --color-theme-overlay-dark: #000000b3;
+  --color-theme-overlay-darker: #00000080;
+
+  --card-shadow: 0 2px 8px -2px rgb(0 0 0 / 0.4);
+  --card-shadow-hover: 0 8px 24px -8px rgb(0 0 0 / 0.55);
 }
 
 /* Custom Utilities */
@@ -185,12 +222,11 @@
   margin-inline: auto;
 }
 
-@utility font-primary {
+/* Brand wordmark - single source of truth for "Regénesis" */
+@utility brand {
   font-family: theme(--font-primary);
-}
-
-@utility font-display {
-  font-family: theme(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 /* Button Utilities */
@@ -210,77 +246,101 @@
 }
 
 .button-primary {
-  color: theme(--color-theme-text-on-primary);
-  background-color: theme(--color-theme-primary);
-  outline-color: theme(--color-theme-primary);
+  color: var(--color-theme-text-on-primary);
+  background-color: var(--color-theme-primary-solid);
+  outline-color: var(--color-theme-primary-solid);
 
   &:hover {
-    background-color: theme(--color-theme-primary-dark);
+    background-color: var(--color-theme-primary-solid-hover);
   }
 }
 
 .button-primary-dark {
-  color: theme(--color-theme-text-on-primary);
-  background-color: theme(--color-theme-primary-dark);
-  outline-color: theme(--color-theme-primary-dark);
+  color: var(--color-theme-text-on-primary);
+  background-color: var(--color-theme-primary-solid-hover);
+  outline-color: var(--color-theme-primary-solid-hover);
 
   &:hover {
-    background-color: theme(--color-theme-primary-darker);
+    background-color: var(--color-theme-primary-darker);
   }
 }
 
 .button-white {
-  background-color: theme(--color-theme-surface);
-  color: theme(--color-theme-primary);
-  outline-color: theme(--color-theme-surface);
+  background-color: #ffffff;
+  color: var(--color-theme-primary-solid);
+  outline-color: #ffffff;
 
   &:hover {
-    background-color: theme(--color-theme-surface-hover);
+    background-color: #f1f5f9;
   }
 }
 
 .button-white-outline {
   @apply bg-transparent;
-  color: theme(--color-theme-text-on-dark);
-  border: 2px solid theme(--color-theme-surface);
-  outline-color: theme(--color-theme-surface);
+  color: var(--color-theme-text-on-dark);
+  border: 2px solid var(--color-theme-text-on-dark);
+  outline-color: var(--color-theme-text-on-dark);
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);
   }
 }
 
-/* Card Utilities */
+.button-outline {
+  @apply bg-transparent;
+  color: var(--color-theme-primary);
+  border: 2px solid var(--color-theme-primary);
+  outline-color: var(--color-theme-primary);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--color-theme-primary) 8%, transparent);
+  }
+}
+
+/* Card Utilities
+   Única receta de tarjeta del sitio: fondo, borde, radio y sombra.
+   `card-interactive` agrega el movimiento de hover para tarjetas enlazadas. */
 .card {
-  background-color: theme(--color-theme-surface);
+  background-color: var(--color-theme-surface);
   border-radius: var(--card-radius);
   box-shadow: var(--card-shadow);
-  border: var(--card-border-width) solid theme(--color-theme-border);
-  transition: box-shadow 200ms ease-in-out;
+  border: var(--card-border-width) solid var(--color-theme-border);
+  transition:
+    box-shadow 200ms ease-in-out,
+    border-color 200ms ease-in-out,
+    transform 200ms ease-in-out;
 
   &:hover {
     box-shadow: var(--card-shadow-hover);
   }
 }
 
+.card-interactive {
+  &:hover {
+    border-color: color-mix(in srgb, var(--color-theme-primary) 30%, transparent);
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-2px);
+  }
+}
+
 /* Link Utilities */
 .link-primary {
-  color: theme(--color-theme-primary);
+  color: var(--color-theme-primary);
   font-weight: theme(--font-weight-semibold);
   transition: color 150ms ease-in-out;
 
   &:hover {
-    color: theme(--color-theme-primary-dark);
+    color: var(--color-theme-primary-hover);
   }
 }
 
 /* Navigation Utilities */
 .nav-link {
   @apply px-4 py-2 rounded-lg text-sm font-medium transition-colors;
-  color: theme(--color-theme-text-secondary);
+  color: var(--color-theme-text-secondary);
 
   &:hover {
-    color: theme(--color-theme-primary);
+    color: var(--color-theme-primary);
   }
 }
 
@@ -293,15 +353,24 @@
   body {
     @apply min-h-full antialiased scroll-smooth;
     font-family: theme(--font-primary);
-    color: theme(--color-theme-primary);
-    background-color: theme(--color-theme-surface-muted);
+    color: var(--color-theme-text-primary);
+    background-color: var(--color-theme-surface-muted);
+  }
+
+  /* Mientras una imagen carga, el navegador pinta el texto alternativo dentro
+     del <img>. Lo hacemos transparente (sigue disponible para lectores de
+     pantalla) y dejamos un fondo neutro de respaldo: las imágenes de sección
+     además traen un placeholder difuminado propio vía `placeholderStyle()`. */
+  img {
+    color: transparent;
+    background-color: var(--color-theme-surface-hover);
   }
 
   /* Focus styles */
   a:focus-visible,
   button:focus-visible {
     @apply outline-2 outline-offset-2;
-    outline-color: theme(--color-theme-primary);
+    outline-color: var(--color-theme-primary);
   }
 
   /* Headings */
@@ -313,7 +382,8 @@
   h6 {
     @apply break-words;
     font-family: theme(--font-primary);
-    color: theme(--color-theme-primary);
+    /* Inherit so headings inside dark/colored sections use the section's text color */
+    color: inherit;
   }
 
   h1 {
@@ -354,7 +424,7 @@
     font-weight: var(--font-weight-body);
     line-height: var(--line-height-body);
     font-family: theme(--font-primary);
-    color: theme(--color-theme-text-primary);
+    color: var(--color-theme-text-primary);
 
     @media (width >= theme(--breakpoint-lg)) {
       font-size: var(--font-size-body-desktop);
@@ -372,87 +442,30 @@
   textarea,
   select {
     @apply mt-1 block w-full rounded-lg px-3 py-2 text-base transition;
-    background-color: theme(--color-theme-surface);
-    color: theme(--color-theme-text-primary);
-    outline: 1px solid theme(--color-theme-border-medium);
+    background-color: var(--color-theme-surface);
+    color: var(--color-theme-text-primary);
+    outline: 1px solid var(--color-theme-border-medium);
     outline-offset: -1px;
 
     &:focus {
-      outline: 2px solid theme(--color-theme-primary);
+      outline: 2px solid var(--color-theme-primary);
       outline-offset: -2px;
     }
 
     &::placeholder {
-      color: theme(--color-theme-text-muted);
+      color: var(--color-theme-text-muted);
     }
   }
 
   label {
     @apply block font-semibold;
-    color: theme(--color-theme-text-primary);
+    color: var(--color-theme-text-primary);
     font-size: 0.9375rem;
     line-height: 1.5;
   }
 }
 
 /* Prose Styles for Typography Plugin */
-@layer components {
-  .prose {
-    --tw-prose-body: theme(--color-theme-text-secondary);
-    --tw-prose-headings: theme(--color-theme-primary);
-    --tw-prose-lead: theme(--color-theme-text-primary);
-    --tw-prose-links: theme(--color-theme-primary);
-    --tw-prose-bold: theme(--color-theme-text-primary);
-    --tw-prose-counters: theme(--color-theme-text-muted);
-    --tw-prose-bullets: theme(--color-theme-text-muted);
-    --tw-prose-hr: theme(--color-theme-border-medium);
-    --tw-prose-quotes: theme(--color-theme-text-primary);
-    --tw-prose-quote-borders: theme(--color-theme-border-medium);
-    --tw-prose-captions: theme(--color-theme-text-muted);
-    --tw-prose-code: theme(--color-theme-text-primary);
-    --tw-prose-pre-code: theme(--color-theme-text-primary);
-    --tw-prose-pre-bg: theme(--color-theme-surface-muted);
-    --tw-prose-th-borders: theme(--color-theme-border-medium);
-    --tw-prose-td-borders: theme(--color-theme-border);
-
-    h1 {
-      color: theme(--color-theme-primary);
-      font-family: theme(--font-primary);
-    }
-
-    h2 {
-      color: theme(--color-theme-primary);
-      font-family: theme(--font-primary);
-    }
-
-    h3 {
-      color: theme(--color-theme-primary);
-      font-family: theme(--font-primary);
-    }
-
-    p {
-      color: theme(--color-theme-text-secondary);
-      line-height: var(--line-height-body-relaxed);
-    }
-
-    a {
-      color: theme(--color-theme-primary);
-
-      &:hover {
-        color: theme(--color-theme-primary-dark);
-      }
-    }
-
-    strong {
-      color: theme(--color-theme-text-primary);
-      font-weight: var(--font-weight-bold);
-    }
-
-    li {
-      color: theme(--color-theme-text-secondary);
-    }
-  }
-}
 
 /* Animation Utilities */
 @keyframes fade-in {
@@ -466,24 +479,24 @@
   }
 }
 
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.8) translateX(var(--translate-x, 0));
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateX(var(--translate-x, 0));
-  }
-}
-
 .animate-fade-in {
   animation: fade-in 1s ease-out forwards;
 }
 
-/* Astro Navbar - Mobile Menu Styles */
-/* Menu is hidden by default via 'hidden' class on MenuItems component */
-/* The astronav-toggle class is used by astro-navbar to toggle visibility */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
 /* Print Styles */
 @media print {
@@ -492,6 +505,53 @@
     display: none;
   }
 }
-.text-lg {
-  font-weight: 500;
+
+/* Prose theme tokens.
+   Kept unlayered and last so they win over the typography plugin defaults. */
+.prose {
+  --tw-prose-body: var(--color-theme-text-secondary);
+  --tw-prose-headings: var(--color-theme-primary);
+  --tw-prose-lead: var(--color-theme-text-primary);
+  --tw-prose-links: var(--color-theme-primary);
+  --tw-prose-bold: var(--color-theme-text-primary);
+  --tw-prose-counters: var(--color-theme-text-muted);
+  --tw-prose-bullets: var(--color-theme-text-muted);
+  --tw-prose-hr: var(--color-theme-border-medium);
+  --tw-prose-quotes: var(--color-theme-text-primary);
+  --tw-prose-quote-borders: var(--color-theme-border-medium);
+  --tw-prose-captions: var(--color-theme-text-muted);
+  --tw-prose-code: var(--color-theme-text-primary);
+  --tw-prose-pre-code: var(--color-theme-text-primary);
+  --tw-prose-pre-bg: var(--color-theme-surface-muted);
+  --tw-prose-th-borders: var(--color-theme-border-medium);
+  --tw-prose-td-borders: var(--color-theme-border);
+}
+
+.prose h1,
+.prose h2,
+.prose h3 {
+  color: var(--color-theme-primary);
+  font-family: var(--font-primary);
+}
+
+.prose p {
+  color: var(--color-theme-text-secondary);
+  line-height: var(--line-height-body-relaxed);
+}
+
+.prose a {
+  color: var(--color-theme-primary);
+
+  &:hover {
+    color: var(--color-theme-primary-hover);
+  }
+}
+
+.prose strong {
+  color: var(--color-theme-text-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.prose li {
+  color: var(--color-theme-text-secondary);
 }

@@ -1,43 +1,58 @@
 ---
 import { Image } from "astro:assets";
 import Heading from "./Heading.astro";
+import { placeholderStyle } from "../lib/images";
 
 interface Props {
   title: string;
   description: string;
-  image: ImageMetadata;
+  /** Si se omite, el hero muestra solo el texto, centrado. */
+  image?: ImageMetadata;
+  /** Texto alternativo de la imagen. Vacío si es puramente decorativa. */
+  imageAlt?: string;
   /** Set to true for above-the-fold hero images to optimize LCP */
   priority?: boolean;
 }
 
-const { title, description, image, priority = true } = Astro.props;
+const { title, description, image, imageAlt = "", priority = true } = Astro.props;
+const imagePlaceholder = image ? await placeholderStyle(image) : undefined;
 ---
 
 <section class="w-full bg-theme-surface-muted section">
   <div class="container">
-    <div class="flex flex-col md:flex-row items-center gap-12 lg:gap-16">
-      <!-- Text container -->
-      <div class="w-full md:w-1/2 flex flex-col justify-center">
-        <Heading level="h1" size="page" class="mb-8">
-          {title}
-        </Heading>
-        <p
-          class="text-base lg:text-lg leading-relaxed text-theme-text-secondary"
-          set:html={description}
-        />
-      </div>
-      <!-- Image container -->
-      <div class="w-full md:w-1/2 flex items-center justify-center">
-        <div class="relative w-full">
-          <Image
-            src={image}
-            alt={title}
-            class="w-full h-[350px] lg:h-[450px] object-cover rounded-2xl"
-            loading={priority ? "eager" : "lazy"}
-            fetchpriority={priority ? "high" : "auto"}
-          />
+    {image ? (
+      <div class="flex flex-col md:flex-row items-center gap-12 lg:gap-16">
+        <!-- Contenedor de texto -->
+        <div class="w-full md:w-1/2 flex flex-col justify-center">
+          <Heading level="h1" size="page" class="mb-8">
+            {title}
+          </Heading>
+          <p class="text-lg leading-relaxed text-theme-text-secondary">{description}</p>
+        </div>
+        <!-- Contenedor de imagen -->
+        <div class="w-full md:w-1/2 flex items-center justify-center">
+          <div class="relative w-full">
+            <Image
+              src={image}
+              alt={imageAlt}
+              widths={[480, 768, 1100, 1600]}
+              sizes="(min-width: 768px) 50vw, 100vw"
+              quality={70}
+              class="w-full h-[350px] lg:h-[450px] object-cover rounded-2xl"
+              style={imagePlaceholder}
+              loading={priority ? "eager" : "lazy"}
+              fetchpriority={priority ? "high" : "auto"}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    ) : (
+      <div class="mx-auto flex max-w-3xl flex-col items-center text-center">
+        <Heading level="h1" size="page" align="center" class="mb-6">
+          {title}
+        </Heading>
+        <p class="text-lg leading-relaxed text-theme-text-secondary">{description}</p>
+      </div>
+    )}
   </div>
 </section>

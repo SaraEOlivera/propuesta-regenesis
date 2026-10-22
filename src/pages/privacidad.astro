@@ -1,0 +1,83 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import CallToActionSection from "../components/CallToActionSection.astro";
+import { contacto } from "../lib/contacto";
+---
+
+<Layout
+  title="Privacidad | Regénesis"
+  description="Cómo cuida Regénesis los datos que compartís a través del sitio y del formulario de contacto."
+>
+  <PageHero
+    title="Privacidad"
+    description="Cómo cuidamos los datos que compartís con nosotros cuando nos escribís o consultás por el sitio."
+  />
+
+  <section class="section bg-theme-surface">
+    <div class="container">
+      <div class="prose prose-lg mx-auto max-w-3xl">
+        <p class="text-sm text-theme-text-muted">Última actualización: octubre de 2026.</p>
+
+        <h2>Quién es responsable</h2>
+        <p>
+          Los datos que se comparten a través de este sitio son tratados por Asociación Civil
+          Regénesis, con sede en Rosario, Santa Fe, Argentina.
+        </p>
+
+        <h2>Qué datos recopilamos</h2>
+        <p>
+          El formulario de contacto solicita nombre, correo electrónico y el mensaje que quieras
+          enviarnos. No pedimos información que no necesitemos para responder tu consulta.
+        </p>
+
+        <h2>Para qué los usamos</h2>
+        <p>
+          Usamos esos datos únicamente para responder tu consulta, orientarte sobre el
+          acompañamiento y coordinar los próximos pasos si los necesitás. No los usamos con fines
+          publicitarios ni los compartimos con terceros.
+        </p>
+
+        <h2>Cómo se envían los datos</h2>
+        <p>
+          Este sitio no tiene un servidor propio que almacene formularios. Al enviar el formulario,
+          se abre WhatsApp con un mensaje ya redactado y los datos que completaste. La conversación
+          queda en WhatsApp, que tiene sus propias condiciones de privacidad. Si preferís no usar
+          WhatsApp, podés escribirnos por correo electrónico o llamarnos.
+        </p>
+
+        <h2>Cuánto tiempo los conservamos</h2>
+        <p>
+          En el sitio no se guardan los datos del formulario. Las conversaciones quedan en el canal
+          que hayas elegido y se conservan solo el tiempo necesario para acompañar tu consulta.
+        </p>
+
+        <h2>Datos sensibles y confidencialidad</h2>
+        <p>
+          Entendemos que muchas consultas incluyen información delicada sobre salud o situaciones
+          familiares. Todo lo que compartas se trata con confidencialidad y respeto, y solo lo
+          consulta el equipo que puede ayudarte a responder.
+        </p>
+
+        <h2>Cookies y preferencias</h2>
+        <p>
+          El sitio no utiliza cookies de seguimiento ni herramientas de publicidad. Guardamos en tu
+          navegador únicamente tu preferencia de tema (claro, oscuro o automático) para que se
+          mantenga entre visitas. Esa preferencia no te identifica.
+        </p>
+
+        <h2>Tus derechos</h2>
+        <p>
+          Podés pedir acceso, corrección o eliminación de los datos que nos hayas compartido. Para
+          hacerlo, escribinos a <a href={contacto.emailUrl}>{contacto.email}</a> y te respondemos a
+          la brevedad.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CallToActionSection
+    heading="¿Tenés dudas sobre tus datos?"
+    subheading="Escribinos y te respondemos. También podés consultarnos por el acompañamiento o por nuestras actividades."
+  />
+</Layout>
