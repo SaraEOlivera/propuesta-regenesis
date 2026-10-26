@@ -9,6 +9,7 @@ location: Sede Regénesis, Barrio Belgrano, Rosario.
 modality: presencial
 summary: Un espacio para aprender reparación y restauración de muebles y
   objetos, recuperando hábitos de trabajo y cuidado.
+cover: ../../assets/actividades/segundo-taller-1.jpg
 gallery:
   - ../../assets/actividades/segundo-taller.jpg
 published: true
